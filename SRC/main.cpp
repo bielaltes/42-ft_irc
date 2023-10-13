@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:06:33 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/11 17:16:10 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/13 22:37:04 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int main(int argc, char *argv[]) {
                 continue;
             }
 
-            while (true) {
+            while (true)
+            {
                 char buffer[1024];
                 ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
                 if (bytesRead == -1) {
@@ -82,12 +83,12 @@ int main(int argc, char *argv[]) {
                 }
 
                 std::string request(buffer, bytesRead);
-
-                if (request == password) {
-                    std::cout << "Access granted!: " << request << std::endl;
+                if (request == password+'\n') {
+                    std::cout << "Access granted!: |" << request.substr(0, request.length()-1) << '|' << std::endl;
                     
-                } else {
-                    std::cout << "Access f: " <<"'"<< password << "' '" << request <<"'";
+                } else if (request != password+'\n'){
+                    // request = request.substr(0, request.length()-1);
+                    std::cout << "Access f: " <<"|"<< password << "| |" << request.substr(0, request.length()-1) << '|' << std::endl;
                 }
             }
         }
