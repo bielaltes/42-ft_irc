@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:06:33 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/13 22:37:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/13 23:28:27 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int main(int argc, char *argv[]) {
                     std::cout << "Access granted!: |" << request.substr(0, request.length()-1) << '|' << std::endl;
                     
                 } else if (request != password+'\n'){
-                    // request = request.substr(0, request.length()-1);
                     std::cout << "Access f: " <<"|"<< password << "| |" << request.substr(0, request.length()-1) << '|' << std::endl;
                 }
             }
