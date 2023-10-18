@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/17 17:51:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:30:11 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,43 @@
 
 // 346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for invite-exception list.
 
- void	invite(Server &server, int static client_fd, info)
- {
+void	invite(Server &server, int static client_fd, cmd_s info)
+{
+	Client		&client = getClient(server, client_fd); //need to create a getter for client from the server.
+	std::string	nickname = client.getNickname();
+	std::string	channel_name = info->channel_name;
+	std::string	invited_client = info->inv_client_name;
 
- }
+	if (nickname.empty() || channel_name.empty())
+	{
+		ERR_NEEDMOREPARAMS(nickname, command);
+		return ;
+	}
+	// aqui he de rebre tots els channels
+	
+	if (channel_name no existeix)
+	{
+		ERR_NOSUCHCHANNEL(nickname, channel_name);
+		return ;
+	}
+	if (nickname no esta al canal)
+	{
+		ERR_NOTONCHANNEL(nickname, channel_name);
+		return ;
+	}
+	if (invited_client esta al canal)
+	{
+		ERR_USERONCHANNEL(client_fd, nickname, channel_name);
+		return ;
+	}
+	if (si client no te permis dinvitació)
+	{
+		ERR_CHANOPRIVSNEEDED(client_fd, channel_name);
+		return ;
+	}
+	// aqui considerem que ja tot es ok
+	RPL_INVITING(client_fd, client.name(), nickname, channel_name);
 
+	// hem invitat al nou user al canal hem de veure si accepta.
+}
 
-
-
-
-
-
-
-RPL_INVITING (341)
-ERR_NEEDMOREPARAMS (461)
-ERR_NOSUCHCHANNEL (403)
-ERR_NOTONCHANNEL (442)
-ERR_CHANOPRIVSNEEDED (482)
-ERR_USERONCHANNEL (443)
