@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
+#    By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
 #    Updated: 2023/10/18 17:09:46 by jareste-         ###   ########.fr        #
@@ -19,11 +19,11 @@ CFLAGS = -Werror -Wextra -Wall -std=c++98 #-g -fsanitize=address
 #########
 
 #########
-FILES = SRC/main
+FILES = SRC/main Server Client
 
 SRC = $(addsuffix .cpp, $(FILES))
 
-vpath %.cpp 
+vpath %.cpp SRC
 #########
 
 #########

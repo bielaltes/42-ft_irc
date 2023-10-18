@@ -12,3 +12,34 @@
 
 #pragma once
 
+#pragma once
+#include "Includes.hpp"
+
+class Client;
+typedef struct cmd
+{
+    std::vector<std::string> args;
+};
+
+class Server
+{
+    private:
+        std::vector<pollfd> _pollsfd;
+        std::string _psswd;
+        int _port;
+        int _active;
+        struct pollfd _serverfd;
+        std::map<int, Client*> _clients;
+
+        cmd &_Parse(char *str);
+        char *_RunCmd(cmd &c, int fd);
+        void _NewClient();
+        void _Request(int i);
+
+    public:
+        Server(int port, std::string psswd);
+        ~Server();
+
+
+        void LoopServer();
+};

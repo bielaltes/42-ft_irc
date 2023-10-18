@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 16:06:33 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/15 18:59:03 by jareste-         ###   ########.fr       */
+/*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
+/*   Updated: 2023/10/18 17:26:39 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../INC/Includes.hpp"
+#pragma once
 
-int main(int argc, char ** argv)
-{
-    if (argc != 3)
-    {
-        std::cout << "Usage: ./ircserv <port> <password>" << std::endl;
-		return (-1);
-    }
-    Server s(atoi(argv[1]), std::string(argv[2]));
-    try
-    {
-        s.LoopServer();
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    
-}
+#include <iostream>
+#include <iostream>
+#include <cstring>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <poll.h>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <map>
 
+#include "Server.hpp"
+#include "Client.hpp"

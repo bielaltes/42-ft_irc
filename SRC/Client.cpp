@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/15 18:44:59 by jareste-         ###   ########.fr       */
+/*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
+/*   Updated: 2023/10/18 17:28:37 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "../INC/Client.hpp"
 
-#include "Includes.hpp"
-
-class Client
+Client::Client()
 {
-    private:
-        std::string user;
-    public:
-        Client();
-        ~Client();
-};
+
+}
+
+Client::~Client()
+{
+    
+}
