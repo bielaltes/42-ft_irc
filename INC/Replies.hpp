@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/18 00:37:44 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:09:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@
 //MODE I
 # define ERR_INVITEONLYCHAN(client, channel) ("ERR : " + " 473 " + client + channel + " :Cannot join channel (+i)")
 # define ERR_INVALIDMODEPARAM(client, target /*chan/user*/, mode, parameter, description) (client + target + mode + parameter + " :" + description)
-# define ERR_INVALIDKEY(client, target chan) (client + target chan + " :Key is not well-formed")
-ERR_INVALIDKEY (525) 
-"<client> <target chan> :Key is not well-formed"
+# define ERR_INVALIDKEY(client, target chan) ("ERR : " + " 525 " + client + target chan + " :Key is not well-formed")
+//FALTEN REPLIES
