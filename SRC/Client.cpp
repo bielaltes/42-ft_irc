@@ -3,10 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/18 09:53:08 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:28:37 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../INC/Client.hpp"
+
+Client::Client()
+{
+
+}
+
+Client::~Client()
+{
+    
+}

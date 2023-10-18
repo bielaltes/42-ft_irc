@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:43:59 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 22:58:57 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:38:15 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(int argc, char ** argv)
         std::cout << "Usage: ./ircserv <port> <password>" << std::endl;
 		return (-1);
     }
-    Server s;
+    Server s(atoi(argv[1]), std::string(argv[2]));
     try
     {
         s.LoopServer();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/17 22:47:43 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:26:39 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
+#include <map>
 
 #include "Server.hpp"
+#include "Client.hpp"
