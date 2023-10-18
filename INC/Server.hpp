@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/15 19:20:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:04:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include "Includes.hpp"
 
 class Client;
-typedef struct cmd
-{
-    std::vector<std::string> args;
-};
+//typedef struct cmd
+//{
+  //  std::vector<std::string> args;
+//};
 
 class Server
 {
@@ -31,8 +31,8 @@ class Server
         struct pollfd _serverfd;
         std::map<int, Client*> _clients;
 
-        cmd &_Parse(char *str);
-        char *_RunCmd(cmd &c, int fd);
+   //     cmd &_Parse(char *str);
+ //       char *_RunCmd(cmd &c, int fd);
         void _NewClient();
         void _Request(int i);
 

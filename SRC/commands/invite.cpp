@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/18 18:30:11 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/19 01:22:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@
 
 // 346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for invite-exception list.
 
-void	invite(Server &server, int static client_fd, cmd_s info)
+void	Server::invite(int static client_fd, cmd_s info)
 {
-	Client		&client = getClient(server, client_fd); //need to create a getter for client from the server.
+	Client		&client = getClient(client_fd); 
 	std::string	nickname = client.getNickname();
 	std::string	channel_name = info->channel_name;
 	std::string	invited_client = info->inv_client_name;
@@ -82,8 +82,12 @@ void	invite(Server &server, int static client_fd, cmd_s info)
 		return ;
 	}
 	// aqui considerem que ja tot es ok
+	// enviem string al invited_client de que lhan invitat
+
+	// resposta al client que ens ha parlat:
 	RPL_INVITING(client_fd, client.name(), nickname, channel_name);
 
 	// hem invitat al nou user al canal hem de veure si accepta.
+	return ;
 }
 
