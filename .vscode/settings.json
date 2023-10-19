@@ -61,6 +61,8 @@
         "utility": "cpp",
         "vector": "cpp",
         "__tree": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp"
     }
 }

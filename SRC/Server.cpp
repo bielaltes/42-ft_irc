@@ -6,17 +6,19 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/18 17:48:53 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:42:28 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../INC/Server.hpp"
 
-Server::Server(int port, std::string psswd)
+Server::Server(int port,const std::string &psswd)
 {
     _psswd = psswd;
     _port = port;
     _clients = std::map<int, Client*>();
+    _channels = std::vector<Channel*>();
+    
     _active = 1;
     _pollsfd = std::vector<pollfd>(1); 
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -62,15 +64,15 @@ void Server::LoopServer()
 			if (this->_pollsfd[i].revents & POLLIN)
 			{
 				if (this->_pollsfd[i].fd == this->_serverfd.fd)
-					_NewClient();	
+					_newClient();	
 				else
-					_Request(i);
+					_request(i);
 			}
 		}
     }
 }
 
-void Server::_NewClient()
+void Server::_newClient()
 {
     struct sockaddr_storage	remotaddr;
 	socklen_t				addrlen;
@@ -86,14 +88,14 @@ void Server::_NewClient()
         this->_pollsfd.push_back(p);
         this->_pollsfd[this->_active].fd = newfd;
         this->_pollsfd[this->_active].events = POLLIN;
-        this->_clients.insert(std::pair<int, Client *>(newfd, new Client()));
+        this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd)));
         this->_active++;
 		std::string s = "Welcome";
 		send(newfd, s.c_str(), s.length(), 0);
 	}
 }
 
-void Server::_Request(int i)
+void Server::_request(int i)
 {
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
@@ -110,4 +112,39 @@ void Server::_Request(int i)
     std::string request(buffer, bytesRead);
     std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
     send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
+}
+
+bool Server::_existsClient(const std::string &nick)
+{
+    std::map<int, Client*>::iterator it = _clients.begin();
+    while (it != _clients.end())
+    {
+        if ((*it).second->getNick() == nick)
+            return true;
+    }
+    return false;
+}
+
+void Server::_addClientToChannel(int fd, const std::string &ch_name)
+{
+    Client c = *_clients[fd];
+    for (int i = 0; i < _channels.size(); ++i)
+    {
+        if (ch_name == _channels[i]->getName())
+        {
+            
+            return;
+        }
+    }
+    _channels.push_back(new Channel(ch_name, c));
+}
+
+int Server::_searchChannel(const std::string &name)
+{
+    for (int i = 0; i < _channels.size(); ++i)
+    {
+        if (name == _channels[i]->getName())
+            return i;
+    }
+    return -1;
 }

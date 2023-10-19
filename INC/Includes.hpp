@@ -25,8 +25,10 @@
 #include <stdlib.h>
 #include <vector>
 #include <map>
+#include <unordered_set>
 
 #include "Server.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
 
 # define NICK_ALLOWED_CH "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890[]{}\\|"
