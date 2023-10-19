@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 14:31:39 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:48:12 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 class Client
 {
     private:
-        bool aut;
+        bool _pswd;
         int _fd;
         std::string _username;
         std::string _realname;
@@ -30,7 +30,8 @@ class Client
 
         void SendMessage(const std::string &s);
 
-
+        bool Autenticated() {return _pswd};
+        bool Registered();
 
         //getters
         const std::string &getNick() const {return this->_nick;}
