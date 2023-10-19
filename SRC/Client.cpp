@@ -6,15 +6,18 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 13:50:10 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:16:00 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../INC/Client.hpp"
 
-Client::Client()
+Client::Client(int fd) : _fd(fd)
 {
-
+    _pswd = false;
+    _username = "";
+    _realname = "";
+    _nick = "";
 }
 
 Client::~Client()

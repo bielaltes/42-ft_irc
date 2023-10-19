@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 14:37:15 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:11:13 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,17 @@ class Server
         struct pollfd _serverfd;
         std::map<int, Client*> _clients;
 
-        cmd &_Parse(char *str);
-        void _RunCmd(cmd &c, int fd);
-        void _NewClient();
-        void _Request(int i);
-
+        cmd &_parse(char *str);
+        void _runCmd(cmd &c, int fd);
+        void _newClient();
+        void _request(int i);
+        int _searchChannel(const std::string &name);
+        void _addClientToChannel(int fd, const std::string &ch_name);
+        bool _existsClient(const std::string &nick);
     public:
-        Server(int port, std::string psswd);
+        Server(int port, const std::string &psswd);
         ~Server();
 
-
+        
         void LoopServer();
 };
