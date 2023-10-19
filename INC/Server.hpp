@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 16:11:13 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:35:47 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class Server
         int _active;
         struct pollfd _serverfd;
         std::map<int, Client*> _clients;
+        std::vector<Channel *> _channels;
 
         cmd &_parse(char *str);
         void _runCmd(cmd &c, int fd);

@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 17:00:10 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:53:13 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class Client
         ~Client();
         bool operator=(const Client & cl);
 
-        void SendMessage(const std::string &s);
+        void SendMessage(const std::string &s) const;
 
         bool Autenticated() {return _pswd;}
         bool Registered();

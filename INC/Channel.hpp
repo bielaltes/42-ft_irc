@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 16:00:37 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:52:34 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,25 @@ class Channel
         
         std::string topic;
         
-        std::map<int, Client *> _members;
+        std::map<int, const Client *> _members;
         std::unordered_set<std::string> _invited;
         std::unordered_set<std::string> _operators;
 
     public:
-        Channel(const std::string &name);
+        Channel(const std::string &name, const Client &c);
         ~Channel();
 
         //getters & setters
         const std::string &getName();
         //functions
-        void AddClient(Client &c);
-        void RmClient(Client &c);
+        void addClient(const Client &c);
+        void rmClient(const Client &c);
 
-        void SendMsg(Client &c, const std::string &msg);
+        void sendMsg(const Client &c, const std::string &msg) const;
 
-        bool isMember(std::string &nick);
+        bool isMember(const std::string &nick);
 
-        void invite(Client &c);
+        void invite(const Client &c);
 
 
 };

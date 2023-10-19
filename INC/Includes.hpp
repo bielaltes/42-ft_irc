@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 15:57:08 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:37:45 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,4 @@
 
 #include "Server.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"

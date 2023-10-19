@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 17:00:09 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:42:28 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ Server::Server(int port,const std::string &psswd)
     _psswd = psswd;
     _port = port;
     _clients = std::map<int, Client*>();
+    _channels = std::vector<Channel*>();
+    
     _active = 1;
     _pollsfd = std::vector<pollfd>(1); 
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -121,4 +123,28 @@ bool Server::_existsClient(const std::string &nick)
             return true;
     }
     return false;
+}
+
+void Server::_addClientToChannel(int fd, const std::string &ch_name)
+{
+    Client c = *_clients[fd];
+    for (int i = 0; i < _channels.size(); ++i)
+    {
+        if (ch_name == _channels[i]->getName())
+        {
+            
+            return;
+        }
+    }
+    _channels.push_back(new Channel(ch_name, c));
+}
+
+int Server::_searchChannel(const std::string &name)
+{
+    for (int i = 0; i < _channels.size(); ++i)
+    {
+        if (name == _channels[i]->getName())
+            return i;
+    }
+    return -1;
 }
