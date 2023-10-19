@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Includes.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 13:59:39 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:06:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,5 @@
 
 #include "Server.hpp"
 #include "Client.hpp"
+
+# define NICK_ALLOWED_CH "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890[]{}\\|"
