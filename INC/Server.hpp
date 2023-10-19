@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/18 18:29:51 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:00:00 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Server
         std::map<int, Client*> _clients;
 
         cmd &_Parse(char *str);
-        char *_RunCmd(cmd &c, int fd);
+        void _RunCmd(cmd &c, int fd);
         void _NewClient();
         void _Request(int i);
 
