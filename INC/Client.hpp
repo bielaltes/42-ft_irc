@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 18:53:13 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:38:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,17 @@ class Client
         ~Client();
         bool operator=(const Client & cl);
 
-        void SendMessage(const std::string &s) const;
+        void sendMessage(const std::string &s) const;
 
         bool Autenticated() {return _pswd;}
         bool Registered();
 
         //getters
         const std::string &getNick() const {return this->_nick;}
+        void    setNick(std::string s) {this->_nick = s;}
         const std::string &getName() const {return this->_username;}
+        void    setRealName(std::string s) {this->_realname = s;}
+        void    setUserName(std::string s)  {this->_username = s;}
         int getFd() const {return this->_fd;}
         
         bool getPwd() const {return _pswd;}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+         #
+#    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/18 17:09:46 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/19 20:20:25 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,15 +15,15 @@ NAME = ircserv
 #########
 RM = rm -f
 CC = c++
-CFLAGS = -Werror -Wextra -Wall -std=c++98 #-g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall -std=c++98 -g -fsanitize=address
 #########
 
 #########
-FILES = SRC/main Server Client
+FILES = SRC/main Server Client join pass privmsg user commands Channel nick
 
 SRC = $(addsuffix .cpp, $(FILES))
 
-vpath %.cpp SRC
+vpath %.cpp SRC SRC/commands
 #########
 
 #########

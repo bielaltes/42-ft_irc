@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 18:53:18 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:23:36 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ Channel::~Channel()
 
 void Channel::addClient(const Client &c)
 {
-    std::pair<std::map<int, const Client*>::const_iterator, bool> it = _members.insert(std::make_pair(c.getFd(), &c));
+    /*std::pair<std::map<int, const Client*>::const_iterator, bool> it = */_members.insert(std::make_pair(c.getFd(), &c));
 }
 
 void Channel::rmClient(const Client &c)
@@ -47,7 +47,7 @@ void Channel::sendMsg(const Client &c, const std::string &msg) const
     while (it != _members.end())
     {
         if ((*it).second->getNick() != c.getNick())
-            (*it).second->SendMessage(msg);
+            (*it).second->sendMessage(msg);
     }
 }
 

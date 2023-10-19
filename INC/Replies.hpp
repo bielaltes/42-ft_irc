@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 17:00:09 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:32:24 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 //MODE I
 # define ERR_INVITEONLYCHAN(client, channel) ("ERR : " + " 473 " + client + channel + " :Cannot join channel (+i)")
 # define ERR_INVALIDMODEPARAM(client, target /*chan/user*/, mode, parameter, description) (client + target + mode + parameter + " :" + description)
-# define ERR_INVALIDKEY(client, target chan) ("ERR : " + " 525 " + client + target chan + " :Key is not well-formed")
+// # define ERR_INVALIDKEY(client, target_chan) ("ERR : " + " 525 " + client + target chan + " :Key is not well-formed")
 //FALTEN REPLIES
 
 

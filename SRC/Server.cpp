@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 18:42:28 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:42:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void Server::_newClient()
         this->_pollsfd[this->_active].events = POLLIN;
         this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd)));
         this->_active++;
-		std::string s = "Welcome";
-		send(newfd, s.c_str(), s.length(), 0);
+		// std::string s = "Welcome";
+		//send(newfd, s.c_str(), s.length(), 0);
 	}
 }
 
@@ -110,8 +110,10 @@ void Server::_request(int i)
     }
 
     std::string request(buffer, bytesRead);
-    std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
-    send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
+
+    _runCmd(_parse(request.c_str()), this->_pollsfd[i].fd);
+    //std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
+    //send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
 }
 
 bool Server::_existsClient(const std::string &nick)
@@ -128,22 +130,27 @@ bool Server::_existsClient(const std::string &nick)
 void Server::_addClientToChannel(int fd, const std::string &ch_name)
 {
     Client c = *_clients[fd];
-    for (int i = 0; i < _channels.size(); ++i)
+    for (size_t i = 0; i < _channels.size(); ++i)
     {
         if (ch_name == _channels[i]->getName())
         {
-            
+            std::cout << "biel tontu que poses males condicions" << std::endl;
+            _channels[i]->addClient(c);
             return;
         }
     }
+    std::cout << _channels.size() << std::endl;
     _channels.push_back(new Channel(ch_name, c));
+    std::cout << _channels.size() << std::endl;
 }
 
 int Server::_searchChannel(const std::string &name)
 {
-    for (int i = 0; i < _channels.size(); ++i)
+    std::cout << name << _channels.size() << std::endl;
+    for (size_t i = 0; i < _channels.size(); ++i)
     {
-        if (name == _channels[i]->getName())
+        std::cout << "ch: " << _channels[i]->getName() << " name: |"<< name+"|"<< std::endl;
+        if (name.compare(_channels[i]->getName()) == 0)
             return i;
     }
     return -1;
