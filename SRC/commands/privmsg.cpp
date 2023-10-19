@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 19:04:02 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:28:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 //      Command: PRIVMSG
 //   Parameters: <target>{,<target>} <text to be sent>
 
-void	Server::privmsg(int const client_fd, cmd_s info)
+void	Server::privmsg(int const client_fd, cmd info)
 {	
-	Client		&client = _clients[client_fd]; 
+	Client		&client = *_clients[client_fd]; 
 	std::string	nickname = client.getNick();
-	Client		&target = //necessito un getter per al target.
+	// Client		&target = //necessito un getter per al target.
 
-	target.SendMessage(info->args[2]);
+	int tst = _searchChannel(info.args[1]);
+	std::cout << info.args[1]<<"| "<< tst<<" " << "\n";
+	_channels[tst]->sendMsg(client, info.args[2]);
 }
 
 

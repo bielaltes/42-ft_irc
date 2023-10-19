@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 18:52:34 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:53:20 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Channel
         bool _o;
         bool _l;
 
-        int limit;
+        //int limit =0;
         
         std::string topic;
         
@@ -37,7 +37,7 @@ class Channel
         ~Channel();
 
         //getters & setters
-        const std::string &getName();
+        const std::string &getName(){return this->_name;}
         //functions
         void addClient(const Client &c);
         void rmClient(const Client &c);

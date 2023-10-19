@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 18:53:04 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:31:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool Client::operator=(const Client & cl)
     return false;
 }
 
-void Client::SendMessage(const std::string &s) const
+void Client::sendMessage(const std::string &s) const
 {
     send(this->_fd, s.c_str(), s.size(), 0);
 }
