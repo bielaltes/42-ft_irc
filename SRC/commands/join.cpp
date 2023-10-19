@@ -6,56 +6,59 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 01:22:51 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:01:11 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../INC/Includes.hpp"
 
-std::string	Server::join(int static client_fd, cmd_s info)
+std::string	Server::join(int const client_fd, cmd_s info)
 {	
-	Client		&client = getClient(client_fd); 
-	std::string	nickname = client.getNickname();
+	Client		&client = _clients[client_fd]; 
+	std::string	nickname = client.getNick();
+
 	std::string	channel_name = info->channel_name;
 	std::string	invited_client = info->inv_client_name;
 
-	if (info->params< 2 || channel esta en pwd mode && info params < 3)
+
+	if (info->args.size() < 2 || (channel.getK() && info params < 3))
 	{
 		ERR_NEEDMOREPARAMS(client_fd, command);
 		return ;
 	}
-	//rebo tota la llista de channels
-	if (no existeix el canal)
+	//COMENTAT PQ DE MOMENT NO POSAREM LIMIT ALS CANALS QUE ES POT UNIR UN USER
+	// if (client esta connectat a molts canals) //no se si ho hem de gestionar realment
+	// {
+	// 	ERR_TOOMANYCHANNELS(nickname, channel);
+	// 	return ;
+	// }
+	if (pass != channel.pass)//nook
 	{
-		ERR_NOSUCHCHANNEL(nickname, channel_name);
+		client.SendMessage(ERR_BADCHANNELKEY(client, channel));
 		return ;
 	}
-	if (client esta connectat a molts canals) //no se si ho hem de gestionar realment
+	// if (client is banned from chan)
+	// {
+	// 	ERR_BANNEDFROMCHAN(client, channel);
+	// 	return ;
+	// }
+	if (client was not invited)//nook
 	{
-		ERR_TOOMANYCHANNELS(nickname, channel);
+		client.SendMessage(ERR_INVITEONLYCHAN(client, channel));
 		return ;
 	}
-	if (pass != channel.pass)
+	if (channel == full)//nook
 	{
-		ERR_BADCHANNELKEY(client, channel);
+		client.SendMessage(ERR_CHANNELISFULL(client, channel));
 		return ;
 	}
-	if (client is banned from chan)
-	{
-		ERR_BANNEDFROMCHAN(client, channel);
-		return ;
+	addclienttochannel(client_fd, channel_name);//a modificar per el pertinent
+	if (channel has topic)//nook
+	{	
+		client.SendMessage(RPL_TOPIC(client, channel, topic)) //S'ENVIA AL CLIENT QUE ACABA D'ENTRAR
+		client.SendMessage(RPL_TOPICWHOTIME(client, channel, topic, setat))s //S'ENVIA AL CLIENT TMB DESPUES DE L'ANTERIOR
 	}
-	if (client was not invited)
-	{
-		ERR_INVITEONLYCHAN(client, channel);
-		return ;
-	}
-	if (channel == full)
-	{
-		ERR_CHANNELISFULL(client, channel);
-		return ;
-	}
-	RPL_TOPIC(client, channel, topic) //S'ENVIA AL CLIENT QUE ACABA D'ENTRAR
-	RPL_TOPICWHOTIME(client, channel, topic, setat) //S'ENVIA AL CLIENT TMB DESPUES DE L'ANTERIOR
-	//Hem d'enviar a tots els clients conectats al canal que un nou client s'ha unit
+	else
+		client.SendMessage(RPL_NOTOPIC(client_fd, client, channel));
+	canal.SendMessage(client, "client noseque has joined.");//haurem d'avisar a tots que algú s'ha unit
 }
-

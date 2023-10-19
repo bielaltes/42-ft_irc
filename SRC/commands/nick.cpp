@@ -6,33 +6,49 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 00:29:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:04:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../INC/Includes.hpp"
 
 //NOT SURE IF WE CAN SET NICK BEFORE USER CMD USE
 // Command: NICK
 // Parameters: <nickname>
-void	Server::nick(int static client_fd, cmd_s info)
+static bool	parseNick(std::string nick)
 {
-	if (info->argc < 2)
-	{
-		ERR_NONICKNAMEGIVEN(client);
-		return ;
-	}
-	if (nickname contains unallowed characters)
-	{
-		ERR_ERRONEUSNICKNAME(client, nickname);
-		return ;
-	}
-	if (nickname in use)
-	{
-		ERR_NICKNAMEINUSE(client, nickname);
-		return ;
-	}
+	std::size_t found = nick.find_first_not_of(NICK_ALLOWED_CH);
+	if (found != std::string::npos)
+		return true;
+	return false;
+}
 
-	// set nickname to this client
+void	Server::nick(int const client_fd, cmd_s info)
+{	
+	Client		&client = _clients[client_fd]; 
+	std::string	nickname = client.getNick();
+
+	if (info->args.size() < 2)
+	{
+		client.sendMessage(ERR_NONICKNAMEGIVEN(client));
+		return ;
+	}
+	if (parseNick(nickname))
+	{
+		client.sendMessage(ERR_ERRONEUSNICKNAME(client, nickname));
+		return ;
+	}
+	if (clientExists)//nook
+	{
+		client.sendMessage(ERR_NICKNAMEINUSE(client, nickname));
+		return ;
+	}
+	client.setNick(nickname);
+	if (client.getName() == NULL)
+		return ;
+	//we must check if username and realname already exist, then 
 	// send message that everything ok and welcome
+	//otherwise just wait
 }
 
 //imo aquest error mai es dona pq mai tenim un altre server o no ho entenc(?)

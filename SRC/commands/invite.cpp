@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 01:22:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:04:24 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,48 +46,45 @@
 // Some rare implementations use numerics 346/347 instead of 336/337 as `RPL_INVITELIST`/`RPL_ENDOFINVITELIST`. You should check the server you are using implements them as expected.
 
 // 346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for invite-exception list.
+#include "../../INC/Includes.hpp"
 
-void	Server::invite(int static client_fd, cmd_s info)
+void	Server::invite(int static client_fd, cmd info)
 {
-	Client		&client = getClient(client_fd); 
-	std::string	nickname = client.getNickname();
-	std::string	channel_name = info->channel_name;
-	std::string	invited_client = info->inv_client_name;
+	Client		&client = _clients(client_fd); 
+	std::string	nickname = client.getNick();
 
-	if (nickname.empty() || channel_name.empty())
+	if (nickname.empty() || info->args.size() < 3)
 	{
-		ERR_NEEDMOREPARAMS(nickname, command);
+		client.SendMessage(ERR_NEEDMOREPARAMS(nickname, command));
 		return ;
 	}
+	std::string	channel_name = info->args[2];
+	std::string	invited_client = info->args[1];
+
 	// aqui he de rebre tots els channels
-	
-	if (channel_name no existeix)
+	int ch_num = searchChannel(channel_name);// me retorna int que equival a la posicio del canal al vector
+	//-1 == error.
+	if (ch_num == -1)//SEMBLA OK
 	{
-		ERR_NOSUCHCHANNEL(nickname, channel_name);
+		client.SendMessage(ERR_NOSUCHCHANNEL(nickname, channel_name));
 		return ;
 	}
-	if (nickname no esta al canal)
+	if (channel.searchNick(client))//NOOK
 	{
-		ERR_NOTONCHANNEL(nickname, channel_name);
+		client.SendMessage(ERR_NOTONCHANNEL(nickname, channel_name));
 		return ;
 	}
-	if (invited_client esta al canal)
+	if (channel.searchNick(invited_client))//NOOK
 	{
-		ERR_USERONCHANNEL(client_fd, nickname, channel_name);
+		client.SendMessage(ERR_USERONCHANNEL(client_fd, nickname, channel_name));
 		return ;
 	}
-	if (si client no te permis dinvitació)
+	if (channel mode is inviteonly and user has no priv)//NOOK
 	{
 		ERR_CHANOPRIVSNEEDED(client_fd, channel_name);
 		return ;
 	}
-	// aqui considerem que ja tot es ok
-	// enviem string al invited_client de que lhan invitat
-
-	// resposta al client que ens ha parlat:
-	RPL_INVITING(client_fd, client.name(), nickname, channel_name);
-
-	// hem invitat al nou user al canal hem de veure si accepta.
+	invited_client.SendMessage(RPL_INVITING(client_fd, client.name(), nickname, channel_name));
 	return ;
 }
 
