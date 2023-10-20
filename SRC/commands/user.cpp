@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:34:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:06:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:01:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	Server::user(int const client_fd, cmd info)
 	client.setRealName(info.args[4]);
 	if (client.getNick() == "")
 		return ;
-	client.sendMessage("Welcome you are registered");//nook
+	client.sendMessage("Welcome you are registered\r\n");//nook
 	//else  we have to print the repply that everything went welland user is registered.
 }
 

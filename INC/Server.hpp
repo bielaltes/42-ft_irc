@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:47:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:53:14 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ class Server
         void    user(int const client_fd, cmd info);
         void    nick(int const client_fd, cmd info);
         void    privmsg(int const client_fd, cmd info);
+        void    privmsgUsers(int const client_fd, cmd info);
+        void    privmsgChannel(int const client_fd, cmd info);
         void    invite(int const client_fd, cmd info);
     public:
         Server(int port, const std::string &psswd);

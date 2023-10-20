@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:27:26 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:40:41 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ void Server::_runCmd(cmd c, int const client_fd)
 	// //array de funcions a executar:
 	// void	(Server::*execmd[3])(int const client_fd, cmd info) = {&Server::invite, &Server::join, &Server::user};
 	
-	if (!_clients[client_fd]->getPwd())
+	if (!_clients[client_fd]->getPwd() || c.args[0] == "PASS")
 	{
 		if (c.args[0] == "PASS")
 			pass(client_fd, c);
+		// if (!_clients[client_fd]->getPwd()) //not sure about
+		// {
+		// 	// rmClient(client_fd);//no esta implementat encara
+		// 	close(client_fd);
+		// 	return ;
+		// } 
 	}
 
 //abans de res he de revisar si estan loguejats, he de revisar si rebo comanda PASS i si

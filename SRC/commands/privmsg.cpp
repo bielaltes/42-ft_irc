@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 10:21:37 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 21:53:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,67 @@
 //      Command: PRIVMSG
 //   Parameters: <target>{,<target>} <text to be sent>
 
-void	Server::privmsg(int const client_fd, cmd info)
-{	
+void	Server::privmsgChannel(int const client_fd, cmd info)
+{
 	Client		*client = _clients[client_fd]; 
 	std::string	nickname = client->getNick();
-	// Client		&target = //necessito un getter per al target.
 
+	if (_searchChannel(info.args[1]) == -1)
+	{
+		client->sendMessage(ERR_NOSUCHCHANNEL(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
+		return ;
+	}
+	// if ()//no ho pot enviar al canal, entenc que no te permisos o nose
+	// {
+	// 	client.sendMessage(ERR_CANNOTSENDTOCHAN(client.getName(), info.args[1]));
+	// 	return ;
+	// }
+	if (info.args.size() < 3)
+	{
+		client->sendMessage(ERR_NOTEXTTOSEND(client->getName()));
+		return ;
+	}
 	int tst = _searchChannel(info.args[1]);
 	std::cout << "Sending from client " << nickname << " message "<< info.args[2] << "\n";
 	_channels[tst]->sendMsg(*client, info.args[2]);
 }
 
+void	Server::privmsgUsers(int const client_fd, cmd info)
+{
+	Client		*client = _clients[client_fd]; 
+	std::string	nickname = client->getNick();
+
+	if (info.args[1][0] == ':')
+	{
+		client->sendMessage(ERR_NORECIPIENT(client->getName(), info.args[1]));
+		return ;
+	}
+	if (!_existsClientNick(info.args[1]))
+	{
+		client->sendMessage(ERR_NOSUCHCHANNEL(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
+		return ;
+	}
+	if (info.args.size() < 3)
+	{
+		client->sendMessage(ERR_NOTEXTTOSEND(client->getName()));
+		return ;
+	}
+	//aqui va el buscar l'usuari desde l'string i
+	// target.sendMessage(info.args[2]);
+}
+
+
+void	Server::privmsg(int const client_fd, cmd info)
+{	
+	if (info.args[1][0] == '#' || info.args[1][0] == '&')
+		privmsgChannel(client_fd, info);
+	else
+		privmsgUsers(client_fd, info);
+}
+
+// RPL_AWAY (301) ?????????????? 
+//   "<client> <nick> :<message>"
+// Indicates that the user with the nickname <nick> is currently away and sends the away message that they set.
 
 // ERR_NOSUCHNICK (401)
 // ERR_NOSUCHSERVER (402)
