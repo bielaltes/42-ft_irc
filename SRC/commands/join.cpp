@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 10:14:21 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:18:45 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,14 @@ void	Server::join(int const client_fd, cmd info)
 	// std::string	invited_client = info.inv_client_name;
 
 
-			// if (info.args.size() < 2 || (channel.getK() && info.args.size() < 3))
+	if (info.args.size() < 2)// || (channel.getK() && info.args.size() < 3))
+	{
+		client.sendMessage(ERR_NEEDMOREPARAMS(_clients[client_fd]->getNick(), info.args[0]));
+		return ;
+	}	
+			// if (info.args[2] != _channels[ch].getPass())//nook
 			// {
-			// 	client.SendMessage(ERR_NEEDMOREPARAMS(client_fd, command));
-			// 	return ;
-			// }
-	//COMENTAT PQ DE MOMENT NO POSAREM LIMIT ALS CANALS QUE ES POT UNIR UN USER
-	// if (client esta connectat a molts canals) //no se si ho hem de gestionar realment
-	// {
-	// 	ERR_TOOMANYCHANNELS(nickname, channel);
-	// 	return ;
-	// }
-	
-			// if (pass != _channels[ch].getPass())//nook
-			// {
-			// 	client.SendMessage(ERR_BADCHANNELKEY(client, channel));
+			// 	client.SendMessage(ERR_BADCHANNELKEY(_clients[client_fd]->getNick(), info.args[1]));
 			// 	return ;
 			// }
 	// if (client is banned from chan)

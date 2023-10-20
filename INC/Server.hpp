@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 12:57:05 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:47:52 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ class Server
         void _request(int i);
         int _searchChannel(const std::string &name);
         void _addClientToChannel(int fd, const std::string &ch_name);
-        bool _existsClient(const std::string &nick);
+        bool _existsClientNick(const std::string &nick);
+        bool _existsClientUser(const std::string &user);
         void    join(int const client_fd, cmd info);
         void    pass(int const client_fd, cmd info);
         void    user(int const client_fd, cmd info);

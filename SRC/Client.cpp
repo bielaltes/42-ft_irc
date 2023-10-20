@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 09:43:44 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:26:17 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../INC/Client.hpp"
 
-Client::Client(int fd)
+Client::Client(int fd) : _pswd(false)
 {
     _fd = fd;
-    _pswd = false;
+    // _pswd = false;
     _username = "";
     _realname = "";
     _nick = "";

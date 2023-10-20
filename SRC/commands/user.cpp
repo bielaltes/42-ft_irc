@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:34:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 19:39:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:06:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,21 @@ void	Server::user(int const client_fd, cmd info)
 {
 	Client		&client = *_clients[client_fd]; 
 	
-	// if (info->argc < 4)
-	// {
-	// 	ERR_NEEDMOREPARAMS(client, command);
-	// 	return ;
-	// }
-	// if (client already exists)
-	// {
-	// 	ERR_ALREADYREGISTERED(client);
-	// 	return ;
-	// }
+	if (info.args.size() < 4)
+	{
+		client.sendMessage(ERR_NEEDMOREPARAMS(_clients[client_fd]->getNick(), info.args[0]));
+		return ;
+	}
+	if (_existsClientUser(info.args[1]))//already exists
+	{
+		client.sendMessage(ERR_ALREADYREGISTERED(_clients[client_fd]->getNick()));
+		return ;
+	}
 	client.setUserName(info.args[1]);
 	client.setRealName(info.args[4]);
 	if (client.getNick() == "")
 		return ;
+	client.sendMessage("Welcome you are registered");//nook
 	//else  we have to print the repply that everything went welland user is registered.
 }
 

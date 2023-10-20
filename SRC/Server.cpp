@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 13:02:40 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:31:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,24 @@ Client *Server::getClient(int fd)
     return _clients[fd];
 }
 
-bool Server::_existsClient(const std::string &nick)
+bool Server::_existsClientNick(const std::string &nick)
 {
     std::map<int, Client*>::iterator it = _clients.begin();
     while (it != _clients.end())
     {
         if ((*it).second->getNick() == nick)
+            return true;
+        ++it;
+    }
+    return false;
+}
+
+bool Server::_existsClientUser(const std::string &user)
+{
+    std::map<int, Client*>::iterator it = _clients.begin();
+    while (it != _clients.end())
+    {
+        if ((*it).second->getName() == user)
             return true;
         ++it;
     }

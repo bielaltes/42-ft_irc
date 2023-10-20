@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 09:57:13 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:16:53 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 //NOT SURE IF WE CAN SET NICK BEFORE USER CMD USE
 // Command: NICK
 // Parameters: <nickname>
-// static bool	parseNick(std::string nick)
-// {
-// 	std::size_t found = nick.find_first_not_of(NICK_ALLOWED_CH);
-// 	if (found != std::string::npos)
-// 		return true;
-// 	return false;
-// }
+static bool	parseNick(std::string nick)
+{
+	std::size_t found = nick.find_first_not_of(NICK_ALLOWED_CH);
+	if (found != std::string::npos)
+		return true;
+	return false;
+}
 
 void	Server::nick(int const client_fd, cmd info)
 {	
@@ -29,25 +29,26 @@ void	Server::nick(int const client_fd, cmd info)
 	std::string	nickname = client.getNick();
 
 	(void) info;
-	// if (info->args.size() < 2)
-	// {
-	// 	client.sendMessage(ERR_NONICKNAMEGIVEN(client));
-	// 	return ;
-	// }
-	// if (parseNick(nickname))
-	// {
-	// 	client.sendMessage(ERR_ERRONEUSNICKNAME(client, nickname));
-	// 	return ;
-	// }
-	// if (clientExists)//nook
-	// {
-	// 	client.sendMessage(ERR_NICKNAMEINUSE(client, nickname));
-	// 	return ;
-	// }
+	if (info.args.size() < 2)
+	{
+		client.sendMessage(ERR_NONICKNAMEGIVEN(_clients[client_fd]->getNick()));
+		return ;
+	}
+	if (parseNick(nickname))
+	{
+		client.sendMessage(ERR_ERRONEUSNICKNAME(_clients[client_fd]->getName(), info.args[1]));
+		return ;
+	}
+	if (_existsClientNick(info.args[1]))//nook POTSER ARA SIOK hehe
+	{
+		client.sendMessage(ERR_NICKNAMEINUSE(_clients[client_fd]->getName(), info.args[1]));
+		return ;
+	}
 	client.setNick(info.args[1]);
-	std::cout << "Added nickname to fd: " << client_fd << "nickname: " << client.getNick() << std::endl;
+	// std::cout << "Added nickname to fd: " << client_fd << "nickname: " << client.getNick() << std::endl;
 	if (client.getName() == "")
 		return ;
+	client.sendMessage("Welcome you are registered");//nook
 	//we must check if username and realname already exist, then 
 	// send message that everything ok and welcome
 	//otherwise just wait

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 09:20:13 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:27:26 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void Server::_runCmd(cmd c, int const client_fd)
 	// 		return ;
 	// 	}
 
-	if (c.args[0] == "PASS")
-	{
-		pass(client_fd, c);
-	}
+	// if (c.args[0] == "PASS")
+	// {
+	// 	pass(client_fd, c);
+	// }
 	if (c.args[0] == "JOIN")
 	{
 		join(client_fd, c);
