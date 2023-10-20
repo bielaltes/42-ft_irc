@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 19:52:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 09:57:13 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	Server::nick(int const client_fd, cmd info)
 	// 	client.sendMessage(ERR_NICKNAMEINUSE(client, nickname));
 	// 	return ;
 	// }
-	client.setNick(nickname);
+	client.setNick(info.args[1]);
+	std::cout << "Added nickname to fd: " << client_fd << "nickname: " << client.getNick() << std::endl;
 	if (client.getName() == "")
 		return ;
 	//we must check if username and realname already exist, then 

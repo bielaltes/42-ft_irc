@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 20:36:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:14:21 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	Server::join(int const client_fd, cmd info)
 			// 	client.SendMessage(ERR_CHANNELISFULL(client, channel));
 			// 	return ;
 			// }
-	std::cout << "holaholahoola" << std::endl;
 		_addClientToChannel(client_fd, info.args[1]);
 		// int ch = _searchChannel(info.args[1]);
 			// if (channel has topic)//nook

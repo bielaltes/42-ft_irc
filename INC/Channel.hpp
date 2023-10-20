@@ -3,19 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 19:53:20 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:02:25 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include "Includes.hpp"
 
+class Server;
+
 class Channel
 {
     private:
+        Server *_s;
         std::string _name;
 
         bool _i;
@@ -28,12 +31,12 @@ class Channel
         
         std::string topic;
         
-        std::map<int, const Client *> _members;
-        std::unordered_set<std::string> _invited;
-        std::unordered_set<std::string> _operators;
+        std::unordered_set<int> _members;
+        std::unordered_set<int> _invited;
+        std::unordered_set<int> _operators;
 
     public:
-        Channel(const std::string &name, const Client &c);
+        Channel(Server *s, const std::string &name, const Client &c);
         ~Channel();
 
         //getters & setters

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 20:42:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:02:40 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ void Server::_request(int i)
     //send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
 }
 
+Client *Server::getClient(int fd)
+{
+    return _clients[fd];
+}
+
 bool Server::_existsClient(const std::string &nick)
 {
     std::map<int, Client*>::iterator it = _clients.begin();
@@ -123,6 +128,7 @@ bool Server::_existsClient(const std::string &nick)
     {
         if ((*it).second->getNick() == nick)
             return true;
+        ++it;
     }
     return false;
 }
@@ -134,14 +140,13 @@ void Server::_addClientToChannel(int fd, const std::string &ch_name)
     {
         if (ch_name == _channels[i]->getName())
         {
-            std::cout << "biel tontu que poses males condicions" << std::endl;
+            std::cout << "Afegint client"<< c.getNick() <<" a canal " << _channels[i]->getName()  << std::endl;
             _channels[i]->addClient(c);
             return;
         }
     }
-    std::cout << _channels.size() << std::endl;
-    _channels.push_back(new Channel(ch_name, c));
-    std::cout << _channels.size() << std::endl;
+    _channels.push_back(new Channel(this, ch_name, c));
+    std::cout << "Afegint client" << c.getNick() << " al nou canal " << _channels[_channels.size()-1]->getName() << std::endl;
 }
 
 int Server::_searchChannel(const std::string &name)

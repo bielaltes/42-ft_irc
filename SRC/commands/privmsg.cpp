@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 20:28:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:21:37 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 
 void	Server::privmsg(int const client_fd, cmd info)
 {	
-	Client		&client = *_clients[client_fd]; 
-	std::string	nickname = client.getNick();
+	Client		*client = _clients[client_fd]; 
+	std::string	nickname = client->getNick();
 	// Client		&target = //necessito un getter per al target.
 
 	int tst = _searchChannel(info.args[1]);
-	std::cout << info.args[1]<<"| "<< tst<<" " << "\n";
-	_channels[tst]->sendMsg(client, info.args[2]);
+	std::cout << "Sending from client " << nickname << " message "<< info.args[2] << "\n";
+	_channels[tst]->sendMsg(*client, info.args[2]);
 }
 
 

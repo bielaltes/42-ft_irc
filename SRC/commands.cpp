@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 20:45:57 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 09:20:13 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ cmd Server::_parse(const char *str)
     while (std::getline(ss, token, ' ')) {
         command.args.push_back(token);
     }
-   	command.args[command.args.size() -1] = command.args[command.args.size() -1].substr(0, command.args.size() -2);
+   	command.args[command.args.size() -1].erase(command.args[command.args.size() -1].size() -2);
     return command;
 }
 

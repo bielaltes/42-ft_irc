@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/19 19:31:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 09:43:44 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../INC/Client.hpp"
 
-Client::Client(int fd) : _fd(fd)
+Client::Client(int fd)
 {
+    _fd = fd;
     _pswd = false;
     _username = "";
     _realname = "";
@@ -34,5 +35,5 @@ bool Client::operator=(const Client & cl)
 
 void Client::sendMessage(const std::string &s) const
 {
-    send(this->_fd, s.c_str(), s.size(), 0);
+    std::cout << "Sending message byytes: " << send(this->_fd, s.c_str(), s.size(), 0) << "to: "<< this->_fd<< std::endl;
 }
