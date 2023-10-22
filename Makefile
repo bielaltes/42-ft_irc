@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+         #
+#    By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/20 17:26:51 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/22 11:04:55 by baltes-g         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = ircserv
 #########
 RM = rm -f
 CC = c++
-CFLAGS = -Werror -Wextra -Wall -std=c++98 -g -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address ##-std=c++98
 #########
 
 #########

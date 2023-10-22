@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 20:31:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/22 10:28:09 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,18 +147,18 @@ bool Server::_existsClientUser(const std::string &user)
 
 void Server::_addClientToChannel(int fd, const std::string &ch_name)
 {
-    Client c = *_clients[fd];
+    Client *c = _clients[fd];
     for (size_t i = 0; i < _channels.size(); ++i)
     {
         if (ch_name == _channels[i]->getName())
         {
-            std::cout << "Afegint client"<< c.getNick() <<" a canal " << _channels[i]->getName()  << std::endl;
-            _channels[i]->addClient(c);
+            std::cout << "Afegint client"<< c->getNick() <<" a canal " << _channels[i]->getName()  << std::endl;
+            _channels[i]->addClient(*c);
             return;
         }
     }
-    _channels.push_back(new Channel(this, ch_name, c));
-    std::cout << "Afegint client" << c.getNick() << " al nou canal " << _channels[_channels.size()-1]->getName() << std::endl;
+    _channels.push_back(new Channel(this, ch_name, *c));
+    std::cout << "Afegint client" << c->getNick() << " al nou canal " << _channels[_channels.size()-1]->getName() << std::endl;
 }
 
 int Server::_searchChannel(const std::string &name)
@@ -169,6 +169,24 @@ int Server::_searchChannel(const std::string &name)
         std::cout << "ch: " << _channels[i]->getName() << " name: |"<< name+"|"<< std::endl;
         if (name.compare(_channels[i]->getName()) == 0)
             return i;
+    }
+    return -1;
+}
+
+void Server::_rmClient(const Client &c)
+{
+    for (size_t i = 0; i < _channels.size(); ++i)
+        _channels[i]->rmClient(c);
+}
+
+int Server::_searchUser(const std::string &nick)
+{
+    std::map<int, Client*>::iterator it = _clients.begin();
+    while (it != _clients.end())
+    {
+        if ((*it).second->getNick() == nick)
+            return (*it).first;
+        ++it;
     }
     return -1;
 }
