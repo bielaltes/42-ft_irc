@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 20:31:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/24 01:19:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void Server::LoopServer()
 				if (this->_pollsfd[i].fd == this->_serverfd.fd)
 					_newClient();	
 				else
+                {
+                    std::cout << "request server" << std::endl;
 					_request(i);
+                }
 			}
 		}
     }
@@ -100,16 +103,20 @@ void Server::_request(int i)
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
+        std::cout << "bytes == -1" << std::endl;
         perror("Recv failed");
         return;
     }
 
     if (bytesRead == 0) {
         // Client closed the connection
+        std::cout << "bytes == 0" << std::endl;
         return;
     }
 
     std::string request(buffer, bytesRead);
+
+    std::cout << "request ok" << std::endl;
 
     _runCmd(_parse(request.c_str()), this->_pollsfd[i].fd);
     //std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
@@ -169,6 +176,18 @@ int Server::_searchChannel(const std::string &name)
         std::cout << "ch: " << _channels[i]->getName() << " name: |"<< name+"|"<< std::endl;
         if (name.compare(_channels[i]->getName()) == 0)
             return i;
+    }
+    return -1;
+}
+
+int Server::_searchUser(const std::string &name) //added by jareste
+{
+    std::cout << name << _clients.size() << std::endl;
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        Client* client = it->second;
+        if (client->getNick() == name)
+           return it->first;
     }
     return -1;
 }

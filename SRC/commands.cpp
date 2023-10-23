@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:40:41 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/24 01:21:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 cmd Server::_parse(const char *str)
 {
+    std::cout << "_parse" << str << std::endl;
     cmd command;
     std::stringstream ss(str);
     std::string token;
@@ -33,7 +34,7 @@ void Server::_runCmd(cmd c, int const client_fd)
 	// std::string cmds[] = {"INVITE", "JOIN", "USER", "NICK", "PASS", "MODE", "KICK", "TOPIC", ""};
 	// //array de funcions a executar:
 	// void	(Server::*execmd[3])(int const client_fd, cmd info) = {&Server::invite, &Server::join, &Server::user};
-	
+    std::cout << "_runCmd" << std::endl;
 	if (!_clients[client_fd]->getPwd() || c.args[0] == "PASS")
 	{
 		if (c.args[0] == "PASS")
@@ -58,10 +59,6 @@ void Server::_runCmd(cmd c, int const client_fd)
 	// 		return ;
 	// 	}
 
-	// if (c.args[0] == "PASS")
-	// {
-	// 	pass(client_fd, c);
-	// }
 	if (c.args[0] == "JOIN")
 	{
 		join(client_fd, c);
@@ -78,6 +75,12 @@ void Server::_runCmd(cmd c, int const client_fd)
 	{
 		privmsg(client_fd, c);
 	}
+
+	if (c.args[0] == "INVITE")
+	{
+		invite(client_fd, c);
+	}
+    std::cout << "??????????" << std::endl;
 
 	// if (i == 10)//10 is a placeholder
 		// NO COMMAND FOUND; //not sure if we have to throw an exception or?

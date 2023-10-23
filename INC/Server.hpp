@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 21:53:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:46:43 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Server
         void _newClient();
         void _request(int i);
         int _searchChannel(const std::string &name);
+        int _searchUser(const std::string &name);
         void _addClientToChannel(int fd, const std::string &ch_name);
         bool _existsClientNick(const std::string &nick);
         bool _existsClientUser(const std::string &user);

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 20:26:17 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:57:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ bool Client::operator=(const Client & cl)
 
 void Client::sendMessage(const std::string &s) const
 {
-    std::cout << "Sending message byytes: " << send(this->_fd, s.c_str(), s.size(), 0) << "to: "<< this->_fd<< std::endl;
+    std::string message = s + "\r\n";
+    std::cout << "Sending message byytes: " \
+    << send(this->_fd, message.c_str(), message.size(), 0) \
+    << "to: "<< this->_fd << std::endl;
 }

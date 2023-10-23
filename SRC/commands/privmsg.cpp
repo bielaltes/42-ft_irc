@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 21:53:39 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/23 23:24:35 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	Server::privmsgChannel(int const client_fd, cmd info)
 
 	if (_searchChannel(info.args[1]) == -1)
 	{
-		client->sendMessage(ERR_NOSUCHCHANNEL(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
+		client->sendMessage(ERR_NOSUCHNICK(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
 		return ;
 	}
 	// if ()//no ho pot enviar al canal, entenc que no te permisos o nose
@@ -53,7 +53,7 @@ void	Server::privmsgUsers(int const client_fd, cmd info)
 	}
 	if (!_existsClientNick(info.args[1]))
 	{
-		client->sendMessage(ERR_NOSUCHCHANNEL(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
+		client->sendMessage(ERR_NOSUCHNICK(_clients[client_fd]->getName(), _clients[client_fd]->getNick()));
 		return ;
 	}
 	if (info.args.size() < 3)
@@ -61,10 +61,13 @@ void	Server::privmsgUsers(int const client_fd, cmd info)
 		client->sendMessage(ERR_NOTEXTTOSEND(client->getName()));
 		return ;
 	}
-	//aqui va el buscar l'usuari desde l'string i
-	// target.sendMessage(info.args[2]);
+	int target_fd = _searchUser(info.args[1]);
+	if (target_fd != -1)
+	{
+		Client	*target = _clients[target_fd];
+		target->sendMessage(info.args[2]);
+	}
 }
-
 
 void	Server::privmsg(int const client_fd, cmd info)
 {	

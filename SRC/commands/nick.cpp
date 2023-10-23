@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:40:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/23 23:40:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ void	Server::nick(int const client_fd, cmd info)
 		return ;
 	}
 	client.setNick(info.args[1]);
-	// std::cout << "Added nickname to fd: " << client_fd << "nickname: " << client.getNick() << std::endl;
 	if (client.getName() == "")
 		return ;
-	client.sendMessage("Welcome you are registered\r\n");//nook
+	client.sendMessage("Welcome you are registered");//nook
 	//we must check if username and realname already exist, then 
 	// send message that everything ok and welcome
 	//otherwise just wait
