@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/24 01:13:32 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 01:14:20 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,33 @@ void	Server::invite(int client_fd, cmd info)
 	std::string s_client_fd = std::to_string(client_fd);
 
 	int ch_num = _searchChannel(channel_name);
+	Channel	*channel = _channels[ch_num];
 	if (ch_num == -1)
 	{
 		client->sendMessage(ERR_NOSUCHCHANNEL(client->getNick(), channel_name));
 		return ;
 	}
-	if (!_channels[ch_num]->isMember(client->getNick()))
+	if (!channel->isMember(client->getNick()))
 	{
 		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel_name));
 		return ;
 	}
-	if (_channels[ch_num]->isMember(invited_client))
+	if (channel->isMember(invited_client))
 	{
-		client->sendMessage(ERR_USERONCHANNEL(s_client_fd, client->getNick(), channel_name));
+		client->sendMessage(ERR_USERONCHANNEL(client->getNick(), invited_client, channel_name));
 		return ;
 	}
-	// if (channel mode is inviteonly and user has no priv)//NOOK
-	// {
-	// 	ERR_CHANOPRIVSNEEDED(client_fd, channel_name);
-	// 	return ;
-	// }
-
+	if (channel->getI() && !channel->isOperator(client_fd))
+	{
+		client->sendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel_name));
+		return ;
+	}
 	int target_fd = _searchUser(invited_client);
 	if (target_fd != -1)
 	{
 		Client	*target = _clients[target_fd];
-		target->sendMessage(":" + client->getNick() + " INVITE " + target->getNick() + channel_name);
+		channel->invite(*target);
+		target->sendMessage(":" + client->getNick() + " INVITE " + target->getNick() + " " + channel_name);
 		client->sendMessage(RPL_INVITING(client->getNick(), target->getNick(), channel_name));
 	}
 	return ;

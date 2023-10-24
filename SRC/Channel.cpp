@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/20 13:07:49 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/25 01:13:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,3 +75,12 @@ void Channel::invite(const Client &c)
     _invited.insert(c.getFd());
 }
 
+bool    Channel::isInvited(const int client_fd) const
+{
+    return _invited.count(client_fd) > 0;
+}
+
+bool    Channel::isOperator(const int client_fd) const
+{
+    return _operators.count(client_fd) > 0;
+}

@@ -6,14 +6,14 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/24 23:44:37 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 01:11:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 //INVITE REPLIES
-# define RPL_INVITING(client, nick, channel) (std::string("341 ") + " " + client + " " + nick + " " + channel)
+# define RPL_INVITING(client, nick, channel) (std::string("341 ") + client + " " + nick + " " + channel)
 # define ERR_NEEDMOREPARAMS(user_id, command) (std::string("461 ") + user_id + " " + command + std::string(":Not enough parameters"))
 # define ERR_NOSUCHCHANNEL(user_id, channel) (std::string("403 ") + user_id + " " +  channel + ":No such channel")
 # define ERR_NOTONCHANNEL(user_id, channel) (std::string("442 ") + user_id + " " +  channel + ":You're not on that channel")
@@ -52,12 +52,12 @@
 //JOIN REPLIES
 // ERR_NEEDMOREPARAMS (461)
 // ERR_NOSUCHCHANNEL (403)
-# define ERR_TOOMANYCHANNELS(client, channel) (std::string("405 ") + client + channel + " :You have joined too many channels")
-# define ERR_BADCHANNELKEY(client, channel) (std::string("475 ") + client + channel + " :Cannot join channel (+k)")
+# define ERR_TOOMANYCHANNELS(client, channel) (std::string("405 ") + client + " " + channel + " :You have joined too many channels")
+# define ERR_BADCHANNELKEY(client, channel) (std::string("475 ") + client + " " + channel + " :Cannot join channel (+k)")
 # define ERR_BANNEDFROMCHAN(client, channel) (std::string("474 ") + client + channel + " :Cannot join channel (+b)")
-# define ERR_CHANNELISFULL(client, channel) (std::string("471 ")"" + " 471 " + client + channel + " :Cannot join channel (+l)")
+# define ERR_CHANNELISFULL(client, channel) (std::string("471 ") + client + " " + channel + " :Cannot join channel (+l)")
 // ERR_INVITEONLYCHAN (473)
-# define ERR_BADCHANMASK(channel) (std::string("476 ") + channel + " :Bad Channel Mask")
+# define ERR_BADCHANMASK(client) (std::string("476 ") + client + " :Bad Channel Mask")
 // RPL_TOPIC (332)
 // RPL_TOPICWHOTIME (333)
 # define RPL_NAMREPLY(client, symbol, channel, prefix, nickname) (std::string("353 ") + client + symbol + channel + " :[" + prefix + "]" + nickname + "{ [" + prefix + "]"+ nickname)
