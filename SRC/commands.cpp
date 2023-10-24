@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/24 23:02:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 00:12:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 #include "../INC/Server.hpp"
 
-cmd Server::_parse(const char *str)
+cmd Server::_parse(const char *str, char c)
 {
     cmd command;
     std::stringstream ss(str);
     std::string token;
-    while (std::getline(ss, token, ' ')) {
+    while (std::getline(ss, token, c)) {
         command.args.push_back(token);
     }
    	command.args[command.args.size() -1].erase(command.args[command.args.size() -1].size() -2);

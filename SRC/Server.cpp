@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/24 01:19:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 00:13:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void Server::_request(int i)
 
     std::cout << "request ok" << std::endl;
 
-    _runCmd(_parse(request.c_str()), this->_pollsfd[i].fd);
+    _runCmd(_parse(request.c_str(), ' '), this->_pollsfd[i].fd);
     //std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
     //send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
 }

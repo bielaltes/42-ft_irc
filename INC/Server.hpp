@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/23 22:46:43 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 00:25:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ class Server
         std::map<int, Client*> _clients;
         std::vector<Channel *> _channels;
 
-        cmd _parse(const char *str);
+        cmd _parse(const char *str, const char c);
+        cmd _parse(std::string s, char c);
         void _runCmd(cmd c, int const fd);
         void _newClient();
         void _request(int i);
@@ -47,8 +48,8 @@ class Server
         void    user(int const client_fd, cmd info);
         void    nick(int const client_fd, cmd info);
         void    privmsg(int const client_fd, cmd info);
-        void    privmsgUsers(int const client_fd, cmd info);
-        void    privmsgChannel(int const client_fd, cmd info);
+        void    privmsgUsers(int const client_fd, cmd info, std::string target_name);
+        void    privmsgChannel(int const client_fd, cmd info, std::string target_name);
         void    invite(int const client_fd, cmd info);
     public:
         Server(int port, const std::string &psswd);

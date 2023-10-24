@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/24 23:11:11 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/24 23:13:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	Server::nick(int const client_fd, cmd info)
 		client->sendMessage(ERR_ERRONEUSNICKNAME(client->getName(), info.args[1]));
 		return ;
 	}
-	if (_existsClientNick(info.args[1]))//nook POTSER ARA SIOK hehe
+	if (_existsClientNick(info.args[1]))
 	{
 		client->sendMessage(ERR_NICKNAMEINUSE(client->getName(), info.args[1]));
 		return ;
