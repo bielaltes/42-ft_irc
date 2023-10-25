@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 11:44:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:34:28 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ cmd Server::_parse(const char *str, char c)
     cmd command;
     std::stringstream ss(str);
     std::string token;
+	std::cout <<"Income str " << str;
     while (std::getline(ss, token, c)) {
         command.args.push_back(token);
     }
-   	command.args[command.args.size() -1].erase(command.args[command.args.size() -1].size() -2);
+	for (size_t i = 0; i < command.args.size(); ++i)
+		std::cout << "i: " << command.args[i] << std::endl;
     return command;
 }
 
@@ -81,4 +83,32 @@ void Server::_runCmd(cmd c, int const client_fd)
 		// if (i == 10)//10 is a placeholder
 			// NO COMMAND FOUND; //not sure if we have to throw an exception or?
 	}
+}
+
+std::vector<std::string> Server::_splitByDelimiters(const std::string& input, const std::string& delimiters) {
+    std::vector<std::string> tokens;
+    size_t start = 0, end = 0;
+
+    while (start < input.length()) {
+        // Find the first character that is not a delimiter
+        start = input.find_first_not_of(delimiters, end);
+
+        // If no non-delimiter character is found, break
+        if (start == std::string::npos) {
+            break;
+        }
+
+        // Find the end of the token
+        end = input.find_first_of(delimiters, start);
+
+        // Extract the token
+        if (end == std::string::npos) {
+            tokens.push_back(input.substr(start));
+            break;
+        } else {
+            tokens.push_back(input.substr(start, end - start));
+        }
+    }
+
+    return tokens;
 }

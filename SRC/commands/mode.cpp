@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 12:27:44 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:40:46 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void	Server::mode(int const client_fd, cmd info)
 		modeActivated.append(modes[0]);
 	if (modes[1].size() > 1)
 		modeActivated.append(modes[1]);
+	std::cout << "hola biel" << std::endl;
 	channel->sendMsg(NULL, modeActivated);
 	// :irc.example.com 324 dan #foobar +nrt
 	//gestionar si em passen k i l que de moment no ho gestiono

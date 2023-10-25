@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 11:44:43 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:33:26 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class Client
         bool _pswd;
         bool _registered;
         int _fd;
+        std::string _buffer;
         std::string _username;
         std::string _realname;
         std::string _nick;
@@ -37,11 +38,13 @@ class Client
         void    setRealName(std::string s) {this->_realname = s;}
         void    setUserName(std::string s)  {this->_username = s;}
         void    setHostName(std::string s)  {this->_hostname = s;}
+        void    setBuffer(std::string s)  {this->_buffer = s;}
 
         //getters
         const std::string &getNick() const {return this->_nick;}
         const std::string &getName() const {return this->_username;}
         const std::string &getHostName() const {return this->_hostname;}
+        const std::string &getBuffer() const {return this->_buffer;}
         int getFd() const {return this->_fd;}        
         void setPwd() {_pswd = true;}
         bool Autenticated() {return _pswd;}

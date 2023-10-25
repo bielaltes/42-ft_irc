@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 11:09:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:34:38 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ class Server
         bool _existsClientNick(const std::string &nick);
         bool _existsClientUser(const std::string &user);
         void _rmClient(const Client &c);
+        std::vector<std::string> _splitByDelimiters(const std::string& input, const std::string& delimiters);
         void    join(int const client_fd, cmd info);
         void    pass(int const client_fd, cmd info);
         void    user(int const client_fd, cmd info);

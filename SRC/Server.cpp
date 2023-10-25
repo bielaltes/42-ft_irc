@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 08:44:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:34:08 by baltes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ Server::Server(int port,const std::string &psswd)
 
 Server::~Server()
 {
-    
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        delete (*it).second;
+    }
+    for (size_t i = 0; i < _channels.size(); ++i)
+        delete _channels[i];
 }
 
 void Server::LoopServer()
@@ -66,7 +71,6 @@ void Server::LoopServer()
 					_newClient();	
 				else
                 {
-                    std::cout << "request server" << std::endl;
 					_request(i);
                 }
 			}
@@ -92,8 +96,6 @@ void Server::_newClient()
         this->_pollsfd[this->_active].events = POLLIN;
         this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd)));
         this->_active++;
-		// std::string s = "Welcome";
-		//send(newfd, s.c_str(), s.length(), 0);
 	}
 }
 
@@ -102,7 +104,6 @@ void Server::_request(int i)
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
-        std::cout << "bytes == -1" << std::endl;
         perror("Recv failed");
         return;
     }
@@ -110,14 +111,24 @@ void Server::_request(int i)
     if (bytesRead == 0) {
         // Client closed the connection
         std::cout << "bytes == 0" << std::endl;
+        _rmClient(*_clients[this->_pollsfd[i].fd]);
         return;
     }
+    std::cout << buffer << std::endl;
 
     std::string request(buffer, bytesRead);
 
-    std::cout << "request ok" << std::endl;
-
-    _runCmd(_parse(request.c_str(), ' '), this->_pollsfd[i].fd);
+    request = _clients[this->_pollsfd[i].fd]->getBuffer() + request;
+    std::vector<std::string> aux = _splitByDelimiters(request, "\r\n");
+    for (size_t j = 0; j < aux.size()-1; ++j)
+        _runCmd(_parse(aux[j].c_str(), ' '), this->_pollsfd[i].fd);
+    if (request.size() >= 2 && request.substr(request.size()-2, request.size()) == "\r\n")
+    {
+        _runCmd(_parse(aux[aux.size()-1].c_str(), ' '), this->_pollsfd[i].fd);
+        _clients[this->_pollsfd[i].fd]->setBuffer("");
+    }
+    else
+        _clients[this->_pollsfd[i].fd]->setBuffer(aux[aux.size() -1]);
     //std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
     //send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
 }
@@ -206,6 +217,17 @@ void Server::_rmClient(const Client &c)
 {
     for (size_t i = 0; i < _channels.size(); ++i)
         _channels[i]->rmClient(c);
+    _clients.erase(c.getFd());
+    close(c.getFd());
+    for (size_t i = 0; i < _pollsfd.size(); ++i)
+    {
+        if (c.getFd() == _pollsfd[i].fd)
+        {
+            _pollsfd.erase(_pollsfd.begin() + i);
+            --_active;
+            break;
+        }
+    }
 }
 
 
