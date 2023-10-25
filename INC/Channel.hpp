@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 03:39:50 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:05:17 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,19 @@ class Channel
         const std::string &getName(){return this->_name;}
         const std::string &getPass(){return this->_pass;}
         bool    getI(){return this->_i;}
+        void    setI(bool mode){this->_i = mode;}
         bool    getT(){return this->_t;}
+        void    setT(bool mode){this->_t = mode;}
         bool    getK(){return this->_k;}
+        void    setK(bool mode){this->_k = mode;}
+        void    setPass(std::string &key){this->_pass = key;}
         bool    getO(){return this->_o;}
+        void    setO(bool mode){this->_o = mode;}
         bool    getL(){return this->_l;}
+        void    setL(bool mode){this->_l = mode;}
+        void    setLimit(int n){this->_limit = n;}
+        std::string getModes();
+        std::string getModeArguments();
         int    getLimit(){return this->_limit;}
         int    getUsersNumber(){return (int)this->_members.size();}
         void    setTopic(std::string const &s){this->_topic = s;}
