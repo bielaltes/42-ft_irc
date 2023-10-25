@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 00:38:15 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:26:56 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:38:27 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	Server::pass(int const client_fd, cmd info)
 	Client		&client = *_clients[client_fd]; 
 	std::string	nickname = client.getNick();
 
-	std::cout << "test" << std::endl;
 	if (info.args.size() < 2)
 	{
 		client.sendMessage(ERR_NEEDMOREPARAMS(_clients[client_fd]->getNick(), info.args[0]));
@@ -29,7 +28,6 @@ void	Server::pass(int const client_fd, cmd info)
 	}
 	if (client.getPwd() == true)
 	{
-		std::cout << "sou tots uns primos" << std::endl; 
 		client.sendMessage(ERR_ALREADYREGISTERED(_clients[client_fd]->getNick()));
 		return ;
 	}

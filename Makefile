@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+         #
+#    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/22 11:04:55 by baltes-g         ###   ########.fr        #
+#    Updated: 2023/10/25 03:21:38 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address ##-std=c++98
 #########
 
 #########
-FILES = SRC/main Server Client join pass privmsg user commands Channel nick
+FILES = SRC/main Server Client join pass privmsg user commands Channel nick invite topic names
 
 SRC = $(addsuffix .cpp, $(FILES))
 

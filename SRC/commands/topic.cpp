@@ -6,37 +6,52 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:13:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 01:22:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:38:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
   //    Command: TOPIC
   // Parameters: <channel> [<topic>]
+#include "../../INC/Server.hpp"
 
-void	Server::topic(int static client_fd, cmd_s info)
+void	Server::topic(int const client_fd, cmd info)
 {
-	if (info->argc < 3)
+	Client		*client = _clients[client_fd]; 
+
+	if (info.args.size() < 2)
 	{
-		ERR_NEEDMOREPARAMS(client_fd, command);
+		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 		return ;
 	}
-	if (no existeixchannel)
+	int	ch = _searchChannel(info.args[1]);
+	if (ch == -1)
 	{
-		ERR_NOSUCHCHANNEL(client_fd, channel);
+		client->sendMessage(ERR_NOSUCHCHANNEL(client->getNick(), info.args[1]));
 		return ;
 	}
-	if (el client no esta al canal)
+	Channel *channel = _channels[ch];
+	if (!channel->isMember(client->getNick()))
 	{
-		ERR_NOTONCHANNEL(client_fd, channel);
+		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel->getName()));
 		return ;
 	}
-	if (no te permisos doperador)
+	if (channel->getT() && !channel->isOperator(client_fd))
 	{
-		ERR_CHANOPRIVSNEEDED(client_fd, channel);
+		client->sendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel->getName()));
 		return ;
 	}
-	// set channel topic
-	// si no ens passen topic hem de fer clear del topic actual.
+	if (info.args.size() == 2)
+	{
+		channel->setTopic("");
+		return ;
+	}
+	std::string message = info.args[2];
+	for (unsigned long i = 3; i < info.args.size(); i++)
+		message.append(" " + info.args[i]);
+	channel->setTopic(message);
+	std::string topicmsg = "TOPIC " + channel->getName() + " :" + channel->getTopic();
+	channel->sendMsg(NULL, topicmsg);
+	//hem d'informar del topic al que estem fent set.
 }
 
 //aquests 3 s'han d'enviar al entrar a un canal,

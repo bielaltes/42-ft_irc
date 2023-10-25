@@ -6,7 +6,7 @@
 /*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/22 10:28:09 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:59:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void Server::LoopServer()
 				if (this->_pollsfd[i].fd == this->_serverfd.fd)
 					_newClient();	
 				else
+                {
+                    std::cout << "request server" << std::endl;
 					_request(i);
+                }
 			}
 		}
     }
@@ -100,18 +103,22 @@ void Server::_request(int i)
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
+        std::cout << "bytes == -1" << std::endl;
         perror("Recv failed");
         return;
     }
 
     if (bytesRead == 0) {
         // Client closed the connection
+        std::cout << "bytes == 0" << std::endl;
         return;
     }
 
     std::string request(buffer, bytesRead);
 
-    _runCmd(_parse(request.c_str()), this->_pollsfd[i].fd);
+    std::cout << "request ok" << std::endl;
+
+    _runCmd(_parse(request.c_str(), ' '), this->_pollsfd[i].fd);
     //std::string s = "Hello, you are fd: " + std::to_string(this->_pollsfd[i].fd) + "\n";
     //send(this->_pollsfd[i].fd, s.c_str(), s.size(), 0);
 }
@@ -173,20 +180,33 @@ int Server::_searchChannel(const std::string &name)
     return -1;
 }
 
+int Server::_searchUser(const std::string &name) //added by jareste
+{
+    std::cout << name << _clients.size() << std::endl;
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        Client* client = it->second;
+        if (client->getNick() == name)
+           return it->first;
+    }
+    return -1;
+}
+
+cmd Server::_parse(std::string str, char c)
+{
+    cmd command;
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, c)) {
+        command.args.push_back(token);
+    }
+    return command;
+}
+
 void Server::_rmClient(const Client &c)
 {
     for (size_t i = 0; i < _channels.size(); ++i)
         _channels[i]->rmClient(c);
 }
 
-int Server::_searchUser(const std::string &nick)
-{
-    std::map<int, Client*>::iterator it = _clients.begin();
-    while (it != _clients.end())
-    {
-        if ((*it).second->getNick() == nick)
-            return (*it).first;
-        ++it;
-    }
-    return -1;
-}
+

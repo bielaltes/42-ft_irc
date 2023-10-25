@@ -6,15 +6,12 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/20 20:16:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/24 23:13:16 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-//NOT SURE IF WE CAN SET NICK BEFORE USER CMD USE
-// Command: NICK
-// Parameters: <nickname>
 static bool	parseNick(std::string nick)
 {
 	std::size_t found = nick.find_first_not_of(NICK_ALLOWED_CH);
@@ -25,37 +22,27 @@ static bool	parseNick(std::string nick)
 
 void	Server::nick(int const client_fd, cmd info)
 {	
-	Client		&client = *_clients[client_fd]; 
-	std::string	nickname = client.getNick();
+	Client		*client = _clients[client_fd]; 
 
-	(void) info;
 	if (info.args.size() < 2)
 	{
-		client.sendMessage(ERR_NONICKNAMEGIVEN(_clients[client_fd]->getNick()));
+		client->sendMessage(ERR_NONICKNAMEGIVEN(client->getNick()));
 		return ;
 	}
-	if (parseNick(nickname))
+	if (parseNick(client->getNick()))
 	{
-		client.sendMessage(ERR_ERRONEUSNICKNAME(_clients[client_fd]->getName(), info.args[1]));
+		client->sendMessage(ERR_ERRONEUSNICKNAME(client->getName(), info.args[1]));
 		return ;
 	}
-	if (_existsClientNick(info.args[1]))//nook POTSER ARA SIOK hehe
+	if (_existsClientNick(info.args[1]))
 	{
-		client.sendMessage(ERR_NICKNAMEINUSE(_clients[client_fd]->getName(), info.args[1]));
+		client->sendMessage(ERR_NICKNAMEINUSE(client->getName(), info.args[1]));
 		return ;
 	}
-	client.setNick(info.args[1]);
-	// std::cout << "Added nickname to fd: " << client_fd << "nickname: " << client.getNick() << std::endl;
-	if (client.getName() == "")
+	client->setNick(info.args[1]);
+	if (client->getName() == "")
 		return ;
-	client.sendMessage("Welcome you are registered");//nook
-	//we must check if username and realname already exist, then 
-	// send message that everything ok and welcome
-	//otherwise just wait
+	client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.IRC.BieldidNothing", client->getNick(), client->getHostName()));//nook
+	client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.IRC.BieldidNothing"));
+	client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.IRC.BieldidNothing"));
 }
-
-//imo aquest error mai es dona pq mai tenim un altre server o no ho entenc(?)
-// ERR_NICKCOLLISION (436) 
-//   "<client> <nick> :Nickname collision KILL from <user>@<host>"
-// Returned by a server to a client when it detects a nickname collision
-// (registered of a NICK that already exists by another server). The text used in the last param of this message may vary.

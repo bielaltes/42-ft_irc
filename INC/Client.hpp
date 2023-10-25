@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 19:38:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 03:16:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Client
         std::string _username;
         std::string _realname;
         std::string _nick;
+        std::string _hostname;
 
     public:
         Client(int fd);
@@ -34,14 +35,17 @@ class Client
         bool Autenticated() {return _pswd;}
         bool Registered();
 
-        //getters
-        const std::string &getNick() const {return this->_nick;}
+        //setters
         void    setNick(std::string s) {this->_nick = s;}
-        const std::string &getName() const {return this->_username;}
         void    setRealName(std::string s) {this->_realname = s;}
         void    setUserName(std::string s)  {this->_username = s;}
-        int getFd() const {return this->_fd;}
-        
+        void    setHostName(std::string s)  {this->_hostname = s;}
+
+        //getters
+        const std::string &getNick() const {return this->_nick;}
+        const std::string &getName() const {return this->_username;}
+        const std::string &getHostName() const {return this->_hostname;}
+        int getFd() const {return this->_fd;}        
         bool getPwd() const {return _pswd;}
         void setPwd() {_pswd = true;}
         bool getReg() const {return _registered;}

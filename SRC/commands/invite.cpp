@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 19:04:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 01:44:12 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,43 +48,49 @@
 // 346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for invite-exception list.
 #include "../../INC/Includes.hpp"
 
-void	Server::invite(int static client_fd, cmd info)
+void	Server::invite(int client_fd, cmd info)
 {
-	Client		&client = _clients(client_fd); 
-	std::string	nickname = client.getNick();
+	Client		*client = _clients[client_fd]; 
 
-	if (nickname.empty() || info->args.size() < 3)
+	if (info.args.size() < 3)
 	{
-		client.SendMessage(ERR_NEEDMOREPARAMS(nickname, command));
+		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 		return ;
 	}
-	std::string	channel_name = info->args[2];
-	std::string	invited_client = info->args[1];
+	std::string	channel_name = info.args[2];
+	std::string	invited_client = info.args[1];
+	std::string s_client_fd = std::to_string(client_fd);
 
-	// aqui he de rebre tots els channels
-	int ch_num = searchChannel(channel_name);// me retorna int que equival a la posicio del canal al vector
-	//-1 == error.
-	if (ch_num == -1)//SEMBLA OK
+	int ch_num = _searchChannel(channel_name);
+	Channel	*channel = _channels[ch_num];
+	if (ch_num == -1)
 	{
-		client.SendMessage(ERR_NOSUCHCHANNEL(nickname, channel_name));
+		client->sendMessage(ERR_NOSUCHCHANNEL(client->getNick(), channel_name));
 		return ;
 	}
-	if (channel.searchNick(client))//NOOK
+	if (!channel->isMember(client->getNick()))
 	{
-		client.SendMessage(ERR_NOTONCHANNEL(nickname, channel_name));
+		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel_name));
 		return ;
 	}
-	if (channel.searchNick(invited_client))//NOOK
+	if (channel->isMember(invited_client))
 	{
-		client.SendMessage(ERR_USERONCHANNEL(client_fd, nickname, channel_name));
+		client->sendMessage(ERR_USERONCHANNEL(client->getNick(), invited_client, channel_name));
 		return ;
 	}
-	if (channel mode is inviteonly and user has no priv)//NOOK
+	if (channel->getI() && !channel->isOperator(client_fd))
 	{
-		ERR_CHANOPRIVSNEEDED(client_fd, channel_name);
+		client->sendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel_name));
 		return ;
 	}
-	invited_client.SendMessage(RPL_INVITING(client_fd, client.name(), nickname, channel_name));
+	int target_fd = _searchUser(invited_client);
+	if (target_fd != -1)
+	{
+		Client	*target = _clients[target_fd];
+		channel->invite(*target);
+		target->sendMessage(":" + client->getNick() + " INVITE " + target->getNick() + " " + channel_name);
+		client->sendMessage(RPL_INVITING(client->getNick(), target->getNick(), channel_name));
+	}
 	return ;
 }
 
