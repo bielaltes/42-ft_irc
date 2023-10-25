@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:06:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/19 15:57:30 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:34:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,34 @@
 //       Command: KICK
 //    Parameters: <channel> <user> *( "," <user> ) [<comment>]
 
-void	Server::kick(int static client_fd, cmd_s info)
-{
-	Client		&client = _clients(client_fd); 
-	std::string	nickname = client.getNick();
 
+NO VA
+void	Server::kick(int static client_fd, cmd info)
+{
+	Client		*client = _clients[client_fd]; 
 
 	if (info->args.size() < 3)
 	{
-		client.SendMessage(ERR_NEEDMOREPARAMS(client_fd, command));
+		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 		return ;
 	}
 
 	//je de fet un get del channel o algo.
-	if (channel no existeix)
+	int	ch = _searchChannel(info.args[1]);
+	if (ch == -1)
 	{
-		client.SendMessage(ERR_NOSUCHCHANNEL(nickname, channel_name));
+		client->sendMessage(ERR_NOSUCHCHANNEL(client->getNick(), info.args[1]));
 		return ;
 	}
-	if (no te permisos doperador)
+	Channel *channel = _channels[ch];
+	if (!channel->isOperator(client_fd))
 	{
-		client.SendMessage(ERR_CHANOPRIVSNEEDED(client, channel));
+		client.SendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel->getName()));
 		return ;
 	}
-	if (no existeix lusuari del kick)
+	if (channel->isMember(args[2]))
 	{
-		client.SendMessage(ERR_USERNOTINCHANNEL(client, nick, channel));
+		client.SendMessage(ERR_USERNOTINCHANNEL(client->, nick, channel->getName));
 		return ;
 	}
 	if (si el client no esta al canal)

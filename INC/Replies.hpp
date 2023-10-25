@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 11:36:59 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:54:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@
 //MODE REPLIES
 //MODE I
 # define ERR_INVITEONLYCHAN(client, channel) (std::string("473 ") + client + " " + channel + " :Cannot join channel (+i)")
-# define ERR_INVALIDMODEPARAM(client, target /*chan/user*/, mode, parameter, description) (client + " " + target + " " + mode + " " + parameter + " :" + description)
 // # define ERR_INVALIDKEY(client, target_chan) ("" + " 525 " + client + target chan + " :Key is not well-formed")
 //FALTEN REPLIES
 
@@ -87,3 +86,4 @@
 
 //MODE REPLIES
 # define RPL_CHANNELMODEIS(client, channel, modestring, arguments) (std::string("324 ") + client + " " + channel + " " + modestring + " " + arguments)
+# define ERR_INVALIDMODEPARAM(client, target, mode, parameter, description) (std::string("696 ") + client + " " + target + " " + mode + " " + parameter + " :" + description)
