@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 02:08:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:36:59 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 //INVITE REPLIES
 # define RPL_INVITING(client, nick, channel) (std::string("341 ") + client + " " + nick + " " + channel)
-# define ERR_NEEDMOREPARAMS(user_id, command) (std::string("461 ") + user_id + " " + command + std::string(":Not enough parameters"))
-# define ERR_NOSUCHCHANNEL(user_id, channel) (std::string("403 ") + user_id + " " +  channel + ":No such channel")
-# define ERR_NOTONCHANNEL(user_id, channel) (std::string("442 ") + user_id + " " +  channel + ":You're not on that channel")
-# define ERR_CHANOPRIVSNEEDED(user_id, channel) (std::string("482 ") + user_id + " " +  channel + ":You're not channel operator")
-# define ERR_USERONCHANNEL(user_id, nick, channel) (std::string("443 ") + user_id + " " +  nick + " " + channel + ":is already on channel")
+# define ERR_NEEDMOREPARAMS(user_id, command) (std::string("461 ") + user_id + " " + command + std::string(" :Not enough parameters"))
+# define ERR_NOSUCHCHANNEL(user_id, channel) (std::string("403 ") + user_id + " " +  channel + " :No such channel")
+# define ERR_NOTONCHANNEL(user_id, channel) (std::string("442 ") + user_id + " " +  channel + " :You're not on that channel")
+# define ERR_CHANOPRIVSNEEDED(user_id, channel) (std::string("482 ") + user_id + " " +  channel + " :You're not channel operator")
+# define ERR_USERONCHANNEL(user_id, nick, channel) (std::string("443 ") + user_id + " " +  nick + " " + channel + " :is already on channel")
 
 //PASS REPLIES
 // ERR_NEEDMOREPARAMS (461)
@@ -84,3 +84,6 @@
 # define RPL_YOURHOST(client, servername) (std::string("002 ") + client + " :Your host is " + servername + ", running version 1.0")
 # define RPL_CREATED(client, datetime) (std::string("003 ") + client + " :This server was created " + datetime)
 # define RPL_MYINFO(client, servername) (std::string("004 ") + client + " " + servername +  " 1.0 itkol")
+
+//MODE REPLIES
+# define RPL_CHANNELMODEIS(client, channel, modestring, arguments) (std::string("324 ") + client + " " + channel + " " + modestring + " " + arguments)

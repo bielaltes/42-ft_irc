@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 03:40:21 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:47:56 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,32 @@ bool    Channel::isOperator(const int client_fd) const
     return _operators.count(client_fd) > 0;
 }
 
-void Channel::sendNames(const Client &c) const
+std::string Channel::getModes()
 {
-    Client  *aux;
-    for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
-        aux = _s->getClient(*it);
-        std::string prefix = "";
-        if (isOperator(aux->getFd()))
-            prefix = "@";
-        sendMsg(NULL, RPL_NAMREPLY(c.getNick(), _name, prefix, aux->getNick()));
-    }
-   for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
-        aux = _s->getClient(*it);
-        aux->sendMessage(RPL_ENDOFNAMES(aux->getNick(), _name));
-    }
+    std::string modes = "+";
+
+    if (_i)
+        modes.append("i");
+    if (_t)
+        modes.append("t");
+    if (_k)
+        modes.append("k");
+    if (_o)
+        modes.append("o");
+    if (_l)
+        modes.append("l");
+    return modes;
 }
 
+std::string Channel::getModeArguments()
+{
+    std::string arguments = "";
 
+    if (_k && !_l)
+        arguments.append(_pass);
+    if (_l && !_k)
+        arguments.append(std::to_string(_limit));
+    if (_k && _l)
+        arguments.append(_pass + " " + std::to_string(_limit));
+    return arguments;   
+}

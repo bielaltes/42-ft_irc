@@ -13,3 +13,4 @@ commands that seems to be done:
 - privmsg(?)
 - invite
 - names
+- mode(started to work, falta k+l junts) si passen +o-i hauria de funcar

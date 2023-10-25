@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:00 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 03:16:22 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:44:43 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ class Client
 
         void sendMessage(const std::string &s) const;
 
-        bool Autenticated() {return _pswd;}
-        bool Registered();
-
         //setters
         void    setNick(std::string s) {this->_nick = s;}
         void    setRealName(std::string s) {this->_realname = s;}
@@ -46,8 +43,8 @@ class Client
         const std::string &getName() const {return this->_username;}
         const std::string &getHostName() const {return this->_hostname;}
         int getFd() const {return this->_fd;}        
-        bool getPwd() const {return _pswd;}
         void setPwd() {_pswd = true;}
-        bool getReg() const {return _registered;}
+        bool Autenticated() {return _pswd;}
         void setReg() {_registered = true;}
+        bool Registered() {return _registered;}
 };

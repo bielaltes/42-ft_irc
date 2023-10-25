@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 03:25:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:09:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ class Server
         bool _existsClientNick(const std::string &nick);
         bool _existsClientUser(const std::string &user);
         void _rmClient(const Client &c);
-        int _searchUser(const std::string &nick);
         void    join(int const client_fd, cmd info);
         void    pass(int const client_fd, cmd info);
         void    user(int const client_fd, cmd info);
@@ -55,8 +54,10 @@ class Server
         void    invite(int const client_fd, cmd info);
         void    topic(int const client_fd, cmd info);
         void    names(int const client_fd, cmd info);
+        void    mode(int const client_fd, cmd info);
+        // void    clientModes(int const client_fd, cmd info);
+        // void    channelModes(int const client_fd, cmd info);
     public:
-        Server(){};
         Server(int port, const std::string &psswd);
         ~Server();
 

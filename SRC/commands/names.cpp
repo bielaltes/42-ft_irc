@@ -6,12 +6,10 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:06:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 03:41:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 04:03:04 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//has to display a whole list of names with RPL_NAMREPLY(353) 
-//ENDED BY RPL_ENDOFNAMES(471)
 #include "../../INC/Server.hpp"
 
 void	Server::names(int const client_fd, cmd info)
@@ -28,4 +26,20 @@ void	Server::names(int const client_fd, cmd info)
 			channel->sendNames(*client);		
 		}
 	}
+}
+
+void Channel::sendNames(const Client &c) const
+{
+    Client  *aux;
+    for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+        aux = _s->getClient(*it);
+        std::string prefix = "";
+        if (isOperator(aux->getFd()))
+            prefix = "@";
+        sendMsg(NULL, RPL_NAMREPLY(c.getNick(), _name, prefix, aux->getNick()));
+    }
+   for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+        aux = _s->getClient(*it);
+        aux->sendMessage(RPL_ENDOFNAMES(aux->getNick(), _name));
+    }
 }
