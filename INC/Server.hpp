@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:10:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:50:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class Server
         void    names(int const client_fd, cmd info);
         void    mode(int const client_fd, cmd info);
         void    kick(int const client_fd, cmd info);
+        std::string currentTime();
     public:
         Server(int port, const std::string &psswd);
         ~Server();

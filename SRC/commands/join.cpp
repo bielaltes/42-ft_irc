@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 03:24:58 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:49:51 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	Server::join(int const client_fd, cmd info)
 {	
 	Client		*client = _clients[client_fd]; 
 
-	if (info.args.size() < 2)// || (channel.getK() && info.args.size() < 3))
+	if (info.args.size() < 2)
 	{
 		client->sendMessage(ERR_NEEDMOREPARAMS(_clients[client_fd]->getNick(), info.args[0]));
 		return ;
@@ -31,18 +31,17 @@ void	Server::join(int const client_fd, cmd info)
 	{
 		Channel		*channel = _channels[ch];
 
-		if (channel->getK() && info.args[2] != channel->getPass())//nook
+		if (channel->getK() && info.args[2] != channel->getPass())
 		{
 			client->sendMessage(ERR_BADCHANNELKEY(client->getNick(), info.args[1]));
 			return ;
 		}
-		if (channel->getI() && !channel->isInvited(client_fd))//nook
+		if (channel->getI() && !channel->isInvited(client_fd))
 		{
-			std::cout << channel->isInvited(client_fd) << std::endl;
 			client->sendMessage(ERR_INVITEONLYCHAN(client->getNick(), channel->getName()));
 			return ;
 		}
-		if (channel->getL() && channel->getLimit() > channel->getUsersNumber())//nook
+		if (channel->getL() && channel->getLimit() > channel->getUsersNumber())
 		{
 			client->sendMessage(ERR_CHANNELISFULL(client->getNick(), channel->getName()));
 			return ;
@@ -51,10 +50,10 @@ void	Server::join(int const client_fd, cmd info)
 	_addClientToChannel(client_fd, info.args[1]);
 	ch = _searchChannel(info.args[1]);
 	Channel *channel = _channels[ch];
-	if (channel->getTopic() != "")//nook
+	if (channel->getTopic() != "")
 	{	
-		client->sendMessage(RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic())); //S'ENVIA AL CLIENT QUE ACABA D'ENTRAR
-		client->sendMessage(RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), "99/99/2024"));//S'ENVIA AL CLIENT TMB DESPUES DE L'ANTERIOR
+		client->sendMessage(RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic()));
+		client->sendMessage(RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), currentTime()));
 	}
 	else
 		client->sendMessage(RPL_NOTOPIC(client->getNick(), channel->getName()));

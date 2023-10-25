@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:07:51 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:53:58 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ cmd Server::_parse(const char *str, char c)
     cmd command;
     std::stringstream ss(str);
     std::string token;
-	std::cout <<"Income str " << str;
     while (std::getline(ss, token, c)) {
         command.args.push_back(token);
     }
-	for (size_t i = 0; i < command.args.size(); ++i)
-		std::cout << "i: " << command.args[i] << std::endl;
     return command;
 }
 
