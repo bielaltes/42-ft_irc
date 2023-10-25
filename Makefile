@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/25 09:50:36 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/25 16:58:51 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS = -Werror -Wextra -Wall -g -fsanitize=address ##-std=c++98
 
 #########
 FILES = SRC/main Server Client join pass privmsg user commands Channel \
-		nick invite topic names mode
+		nick invite topic names mode kick
 
 SRC = $(addsuffix .cpp, $(FILES))
 

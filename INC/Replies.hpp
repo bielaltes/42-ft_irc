@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 15:54:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:05:38 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 //PASS REPLIES
 // ERR_NEEDMOREPARAMS (461)
-# define ERR_ALREADYREGISTERED(client) (std::string("462 ") + client + " :You may not reregister\r\n")
+# define ERR_ALREADYREGISTERED(client) (std::string("462 ") + client + " :You may not reregister")
 # define ERR_PASSWDMISMATCH(client) (std::string("464 ") + client + " :Password incorrect")
 
 //KICK REPLIES
@@ -60,7 +60,7 @@
 // RPL_TOPIC (332)
 // RPL_TOPICWHOTIME (333)
 # define RPL_NAMREPLY(client, channel, prefix, nickname) (std::string("353 ") + client + " = " + channel + " :" + prefix  + nickname)
-# define RPL_ENDOFNAMES(client, channel) (std::string("366 ") + client + channel + " :End of /NAMES list")
+# define RPL_ENDOFNAMES(client, channel) (std::string("366 ") + client + " " + channel + " :End of /NAMES list")
 
 //NICK REPLIES
 # define ERR_NONICKNAMEGIVEN(client) (std::string("431 ") + client + " :No nickname given")

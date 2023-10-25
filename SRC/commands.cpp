@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 14:34:28 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:07:51 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//to redirect each client to a concrete cmd
 
 #include "../INC/Server.hpp"
 
@@ -30,21 +28,10 @@ cmd Server::_parse(const char *str, char c)
 
 void Server::_runCmd(cmd c, int const client_fd)
 {
-	//split input 
-	//array de strings amb els noms de les comandes per comparar amb l'input:
-	// std::string cmds[] = {"INVITE", "JOIN", "USER", "NICK", "PASS", "MODE", "KICK", "TOPIC", ""};
-	// //array de funcions a executar:
-	// void	(Server::*execmd[3])(int const client_fd, cmd info) = {&Server::invite, &Server::join, &Server::user};
 	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS")
 	{
 		if (c.args[0] == "PASS")
 			pass(client_fd, c);
-		// if (!_clients[client_fd]->getPwd()) //not sure about
-		// {
-		// 	// rmClient(client_fd);//no esta implementat encara
-		// 	close(client_fd);
-		// 	return ;
-		// } 
 	}
 	else
 	{
@@ -80,8 +67,10 @@ void Server::_runCmd(cmd c, int const client_fd)
 		{
 			mode(client_fd, c);
 		}
-		// if (i == 10)//10 is a placeholder
-			// NO COMMAND FOUND; //not sure if we have to throw an exception or?
+		if (c.args[0] == "KICK")
+		{
+			kick(client_fd, c);
+		}
 	}
 }
 
@@ -90,18 +79,11 @@ std::vector<std::string> Server::_splitByDelimiters(const std::string& input, co
     size_t start = 0, end = 0;
 
     while (start < input.length()) {
-        // Find the first character that is not a delimiter
         start = input.find_first_not_of(delimiters, end);
-
-        // If no non-delimiter character is found, break
         if (start == std::string::npos) {
             break;
         }
-
-        // Find the end of the token
         end = input.find_first_of(delimiters, start);
-
-        // Extract the token
         if (end == std::string::npos) {
             tokens.push_back(input.substr(start));
             break;
@@ -109,6 +91,5 @@ std::vector<std::string> Server::_splitByDelimiters(const std::string& input, co
             tokens.push_back(input.substr(start, end - start));
         }
     }
-
     return tokens;
 }
