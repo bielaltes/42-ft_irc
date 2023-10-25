@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 14:34:38 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:50:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ class Server
         void    topic(int const client_fd, cmd info);
         void    names(int const client_fd, cmd info);
         void    mode(int const client_fd, cmd info);
-        // void    clientModes(int const client_fd, cmd info);
-        // void    channelModes(int const client_fd, cmd info);
+        void    kick(int const client_fd, cmd info);
+        std::string currentTime();
     public:
         Server(int port, const std::string &psswd);
         ~Server();

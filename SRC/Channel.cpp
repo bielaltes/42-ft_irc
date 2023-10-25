@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 09:47:56 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:51:06 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ Channel::~Channel()
 
 }
 
-
 void Channel::addClient(const Client &c)
 {
     _members.insert(c.getFd());
-    Client *aux = _s->getClient(c.getFd());
-    std::cout << "Added client: " << aux->getNick() << " with fd: " << aux->getFd() << " to channel " << this->getName() << std::endl;
 }
 
 void Channel::rmClient(const Client &c)
@@ -46,11 +43,9 @@ void Channel::rmClient(const Client &c)
 
 void Channel::sendMsg(const Client &c, const std::string &msg) const
 {
-    std::cout << "Channel name "<< this->_name<<" Members size: " << _members.size() << std::endl;
     Client *aux;
     for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
         aux = _s->getClient(*it);
-        std::cout << "El nick es: " << aux->getNick() << std::endl;
         if (c.getNick() != aux->getNick())
             aux->sendMessage(msg);
     }

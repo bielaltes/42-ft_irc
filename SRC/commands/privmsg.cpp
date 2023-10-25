@@ -6,15 +6,11 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 02:59:49 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:46:06 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
-
-// PRIVMSG message
-//      Command: PRIVMSG
-//   Parameters: <target>{,<target>} <text to be sent>
 
 void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_name)
 {
@@ -51,7 +47,6 @@ void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name
 	}
 	if (!_existsClientNick(target_name))
 	{
-		std::cout << target_name + "|" << std::endl;
 		client->sendMessage(ERR_NOSUCHNICK(client->getName(), target_name));
 		return ;
 	}

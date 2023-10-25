@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 16:36:55 by baltes-g         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:07:35 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//we have to handle 5 modes, i,t,k,o,l.
-//they can be mixed
-
-// MODE message
-//      Command: MODE
-//   Parameters: <target> [<modestring> [<mode arguments>...]]
-// The MODE command is used to set or remove 
-// options (or modes) from a given target.
 #include "../../INC/Server.hpp"
-
-// void	Server::clientModes(int const client_fd, cmd info)
-// {
-
-// }
-
-// void	Server::channelModes(int const client_fd, cmd info)
-// {
-	
-// }
 
 static bool	findLetter(std::string const &s, char const c)
 {
@@ -113,8 +95,6 @@ void	Server::mode(int const client_fd, cmd info)
 			std::string pass;
 			if (modes[2] == "k" && findLetter(modes[0], 'l'))
 			{
-				std::cout << "etnreeeeeeeeeeeeee" << std::endl;
-
 				pass = info.args[4];
 			}
 			else
@@ -137,7 +117,6 @@ void	Server::mode(int const client_fd, cmd info)
 			std::string pass;
 			if (modes[2] == "l" && findLetter(modes[0], 'k'))
 			{
-				std::cout << "etnrooooooooo" << std::endl;
 				pass = info.args[4];
 			}
 			else
@@ -182,30 +161,5 @@ void	Server::mode(int const client_fd, cmd info)
 		modeActivated.append(modes[0]);
 	if (modes[1].size() > 1)
 		modeActivated.append(modes[1]);
-	std::cout << "hola biel" << std::endl;
 	channel->sendMsg(NULL, modeActivated);
 }
-
-// If <modestring> is not given, the RPL_CHANNELMODEIS (324)
-//  numeric is returned. Servers MAY choose to hide sensitive 
-// information such as channel keys when sending the current
-// modes. Servers MAY also return the RPL_CREATIONTIME (329) numeric following RPL_CHANNELMODEIS.
-
-// If <modestring> is given, the user sending the command MUST have 
-// appropriate channel privileges on the target channel to change
-// the modes given. If a user does not have appropriate privileges 
-// to change modes on the target channel, the server MUST NOT 
-// process the message, and ERR_CHANOPRIVSNEEDED (482) numeric
-// is returned. If the user has permission to change modes on
-// the target, the supplied modes will be applied based on 
-// the type of the mode (see below). For type A, B, and C 
-// modes, arguments will be sequentially obtained from 
-// <mode arguments>. If a type B or C mode does not 
-// have a parameter when being set, the server MUST 
-// ignore that mode. If a type A mode has been sent 
-// without an argument, the contents of the list MUST 
-// be sent to the user, unless it contains sensitive 
-// information the user is not allowed to access. When 
-// the server is done processing the modes, a MODE command 
-// is sent to all members of the channel containing the mode 
-// changes. Servers MAY choose to hide sensitive information when sending the mode changes.
