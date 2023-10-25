@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 09:50:12 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:09:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ class Server
         // void    clientModes(int const client_fd, cmd info);
         // void    channelModes(int const client_fd, cmd info);
     public:
-        Server(){};
         Server(int port, const std::string &psswd);
         ~Server();
 

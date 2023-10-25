@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 09:53:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:36:59 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,3 @@
 
 //MODE REPLIES
 # define RPL_CHANNELMODEIS(client, channel, modestring, arguments) (std::string("324 ") + client + " " + channel + " " + modestring + " " + arguments)
-

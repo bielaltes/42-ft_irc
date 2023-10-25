@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltes-g <baltes-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:06:33 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/15 18:59:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:25:23 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int main(int argc, char ** argv)
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-    }
-    
+    }    
 }
 

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 09:50:11 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:44:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void Server::_runCmd(cmd c, int const client_fd)
 	// std::string cmds[] = {"INVITE", "JOIN", "USER", "NICK", "PASS", "MODE", "KICK", "TOPIC", ""};
 	// //array de funcions a executar:
 	// void	(Server::*execmd[3])(int const client_fd, cmd info) = {&Server::invite, &Server::join, &Server::user};
-	if (!_clients[client_fd]->getPwd() || c.args[0] == "PASS")
+	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS")
 	{
 		if (c.args[0] == "PASS")
 			pass(client_fd, c);
@@ -44,42 +44,41 @@ void Server::_runCmd(cmd c, int const client_fd)
 		// 	return ;
 		// } 
 	}
-
-//abans de res he de revisar si estan loguejats, he de revisar si rebo comanda PASS i si
-	// client que escriu esta ja loguejat o no.
-
-	if (c.args[0] == "JOIN")
+	else
 	{
-		join(client_fd, c);
+		if (c.args[0] == "JOIN")
+		{
+			join(client_fd, c);
+		}
+		if (c.args[0] == "USER")
+		{
+			user(client_fd, c);
+		}
+		if (c.args[0] == "NICK")
+		{
+			nick(client_fd, c);
+		}
+		if (c.args[0] == "PRIVMSG")
+		{
+			privmsg(client_fd, c);
+		}
+		if (c.args[0] == "INVITE")
+		{
+			invite(client_fd, c);
+		}
+		if (c.args[0] == "TOPIC")
+		{
+			topic(client_fd, c);
+		}
+		if (c.args[0] == "NAMES" && c.args.size() > 1)
+		{
+			names(client_fd, c);
+		}
+		if (c.args[0] == "MODE")
+		{
+			mode(client_fd, c);
+		}
+		// if (i == 10)//10 is a placeholder
+			// NO COMMAND FOUND; //not sure if we have to throw an exception or?
 	}
-	if (c.args[0] == "USER")
-	{
-		user(client_fd, c);
-	}
-	if (c.args[0] == "NICK")
-	{
-		nick(client_fd, c);
-	}
-	if (c.args[0] == "PRIVMSG")
-	{
-		privmsg(client_fd, c);
-	}
-	if (c.args[0] == "INVITE")
-	{
-		invite(client_fd, c);
-	}
-	if (c.args[0] == "TOPIC")
-	{
-		topic(client_fd, c);
-	}
-	if (c.args[0] == "NAMES" && c.args.size() > 1)
-	{
-		names(client_fd, c);
-	}
-	if (c.args[0] == "MODE")
-	{
-		mode(client_fd, c);
-	}
-	// if (i == 10)//10 is a placeholder
-		// NO COMMAND FOUND; //not sure if we have to throw an exception or?
 }

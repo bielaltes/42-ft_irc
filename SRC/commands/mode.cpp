@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 10:20:27 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:27:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ static bool	findLetter(std::string const &s, char const c)
 	return false;
 }
 
+static std::vector<std::string> parseMode(std::string s)
+{
+	std::vector<std::string> modes;
+	int	repeated;
+	char c = s[0];
+
+	modes.push_back("+");
+	modes.push_back("-");
+	for (unsigned long i = 0; i < s.length(); i++)
+	{
+		repeated = 0;
+		if (std::isalpha(s[i]))
+		{
+			for (unsigned long j = i + 1; j < s.length(); j++)
+				if (i != j && s[i] == s[j])
+					repeated = 1;
+			if (repeated == 0 && c == '+')
+				modes[0] = modes[0] + s[i];
+			if (repeated == 0 && c == '-')
+				modes[1] = modes[1] + s[i];
+		}
+		if (s[i] == '+' || s[i] == '-')
+			c = s[i];
+	}
+	return modes;
+}
+
 void	Server::mode(int const client_fd, cmd info)
 {
 	Client		*client = _clients[client_fd]; 
@@ -58,14 +85,14 @@ void	Server::mode(int const client_fd, cmd info)
 		client->sendMessage(RPL_CHANNELMODEIS(client->getNick(), channel->getName(), modes, arguments));
 		return ;
 	}
-	//gestionar si em passen k i l que de moment no ho gestiono
-	if (info.args[2][0] == '+')
+	std::vector<std::string>modes = parseMode(info.args[2]);
+	if (modes[0].size() > 1)
 	{
-		if (findLetter(info.args[2], 'i'))
+		if (findLetter(modes[0], 'i'))
 			channel->setI(true);	
-		if (findLetter(info.args[2], 't'))
+		if (findLetter(modes[0], 't'))
 			channel->setT(true);	
-		if (findLetter(info.args[2], 'k'))
+		if (findLetter(modes[0], 'k'))
 		{
 			if (info.args.size() < 4)
 			{
@@ -75,9 +102,9 @@ void	Server::mode(int const client_fd, cmd info)
 			channel->setK(true);
 			channel->setPass(info.args[3]);	
 		}
-		if (findLetter(info.args[2], 'o'))
+		if (findLetter(modes[0], 'o'))
 			channel->setO(true);	
-		if (findLetter(info.args[2], 'l'))
+		if (findLetter(modes[0], 'l'))
 		{
 			if (info.args.size() < 4)
 			{
@@ -91,13 +118,13 @@ void	Server::mode(int const client_fd, cmd info)
 			channel->setLimit(atoi(info.args[3].c_str()));
 		}
 	}
-	else if (info.args[2][0] == '-')
+	if (modes[1].size() > 1)
 	{
-		if (findLetter(info.args[2], 'i'))
+		if (findLetter(modes[1], 'i'))
 			channel->setI(false);	
-		if (findLetter(info.args[2], 't'))
+		if (findLetter(modes[1], 't'))
 			channel->setT(false);	
-		if (findLetter(info.args[2], 'k'))
+		if (findLetter(modes[1], 'k'))
 		{
 			if (info.args.size() < 4)
 			{
@@ -110,14 +137,82 @@ void	Server::mode(int const client_fd, cmd info)
 			std::string empty = "";
 			channel->setPass(empty);	
 		}
-		if (findLetter(info.args[2], 'o'))
+		if (findLetter(modes[1], 'o'))
 			channel->setO(false);	
-		if (findLetter(info.args[2], 'l'))
+		if (findLetter(modes[1], 'l'))
 		{
 			channel->setL(false);
 			channel->setLimit(atoi(""));
 		}
 	}
+	std::string modeActivated = ":" + client->getNick() + "!" + \
+	client->getHostName() + " MODE " + channel->getName() + " ";
+	if (modes[0].size() > 1)
+		modeActivated.append(modes[0]);
+	if (modes[1].size() > 1)
+		modeActivated.append(modes[1]);
+	channel->sendMsg(NULL, modeActivated);
+	// :irc.example.com 324 dan #foobar +nrt
+	//gestionar si em passen k i l que de moment no ho gestiono
+	// if (info.args[2][0] == '+')
+	// {
+	// 	if (findLetter(info.args[2], 'i'))
+	// 		channel->setI(true);	
+	// 	if (findLetter(info.args[2], 't'))
+	// 		channel->setT(true);	
+	// 	if (findLetter(info.args[2], 'k'))
+	// 	{
+	// 		if (info.args.size() < 4)
+	// 		{
+	// 			client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+	// 			return ;
+	// 		}
+	// 		channel->setK(true);
+	// 		channel->setPass(info.args[3]);	
+	// 	}
+	// 	if (findLetter(info.args[2], 'o'))
+	// 		channel->setO(true);	
+	// 	if (findLetter(info.args[2], 'l'))
+	// 	{
+	// 		if (info.args.size() < 4)
+	// 		{
+	// 			client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+	// 			return ;
+	// 		}
+	// 		for (unsigned long i = 0; i < info.args[3].length(); i++)
+	// 			if (!std::isdigit(info.args[3][i]))
+	// 				return ;
+	// 		channel->setL(true);
+	// 		channel->setLimit(atoi(info.args[3].c_str()));
+	// 	}
+	// }
+	// else if (info.args[2][0] == '-')
+	// {
+	// 	if (findLetter(info.args[2], 'i'))
+	// 		channel->setI(false);	
+	// 	if (findLetter(info.args[2], 't'))
+	// 		channel->setT(false);	
+	// 	if (findLetter(info.args[2], 'k'))
+	// 	{
+	// 		if (info.args.size() < 4)
+	// 		{
+	// 			client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+	// 			return ;
+	// 		}
+	// 		if (info.args[3] != channel->getPass())
+	// 			return ;
+	// 		channel->setK(false);
+	// 		std::string empty = "";
+	// 		channel->setPass(empty);	
+	// 	}
+	// 	if (findLetter(info.args[2], 'o'))
+	// 		channel->setO(false);	
+	// 	if (findLetter(info.args[2], 'l'))
+	// 	{
+	// 		channel->setL(false);
+	// 		channel->setLimit(atoi(""));
+	// 	}
+	// }
 }
 
 // If <modestring> is not given, the RPL_CHANNELMODEIS (324)
