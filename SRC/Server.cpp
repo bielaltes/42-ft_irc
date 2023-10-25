@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: baltes-g <baltes-g@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
 /*   Updated: 2023/10/25 02:59:42 by jareste-         ###   ########.fr       */
@@ -154,18 +154,18 @@ bool Server::_existsClientUser(const std::string &user)
 
 void Server::_addClientToChannel(int fd, const std::string &ch_name)
 {
-    Client c = *_clients[fd];
+    Client *c = _clients[fd];
     for (size_t i = 0; i < _channels.size(); ++i)
     {
         if (ch_name == _channels[i]->getName())
         {
-            std::cout << "Afegint client"<< c.getNick() <<" a canal " << _channels[i]->getName()  << std::endl;
-            _channels[i]->addClient(c);
+            std::cout << "Afegint client"<< c->getNick() <<" a canal " << _channels[i]->getName()  << std::endl;
+            _channels[i]->addClient(*c);
             return;
         }
     }
-    _channels.push_back(new Channel(this, ch_name, c));
-    std::cout << "Afegint client" << c.getNick() << " al nou canal " << _channels[_channels.size()-1]->getName() << std::endl;
+    _channels.push_back(new Channel(this, ch_name, *c));
+    std::cout << "Afegint client" << c->getNick() << " al nou canal " << _channels[_channels.size()-1]->getName() << std::endl;
 }
 
 int Server::_searchChannel(const std::string &name)
@@ -202,3 +202,11 @@ cmd Server::_parse(std::string str, char c)
     }
     return command;
 }
+
+void Server::_rmClient(const Client &c)
+{
+    for (size_t i = 0; i < _channels.size(); ++i)
+        _channels[i]->rmClient(c);
+}
+
+
