@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 00:13:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:59:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,4 +190,15 @@ int Server::_searchUser(const std::string &name) //added by jareste
            return it->first;
     }
     return -1;
+}
+
+cmd Server::_parse(std::string str, char c)
+{
+    cmd command;
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, c)) {
+        command.args.push_back(token);
+    }
+    return command;
 }

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 01:13:35 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 03:39:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ class Channel
 
         int _limit;
         
-        std::string topic;
+        std::string _topic;
         
         std::unordered_set<int> _members;
         std::unordered_set<int> _invited;
-        std::unordered_set<int> _operators;
+        std::unordered_set<int> _operators;//operators not added yet
 
     public:
         Channel(Server *s, const std::string &name, const Client &c);
@@ -49,7 +49,9 @@ class Channel
         bool    getO(){return this->_o;}
         bool    getL(){return this->_l;}
         int    getLimit(){return this->_limit;}
-        int    getUserNumber(){return (int)this->_members.size();}
+        int    getUsersNumber(){return (int)this->_members.size();}
+        void    setTopic(std::string const &s){this->_topic = s;}
+        const std::string    getTopic(){return this->_topic;}
         //functions
         void    addClient(const Client &c);
         void    rmClient(const Client &c);
@@ -61,4 +63,5 @@ class Channel
         void    invite(const Client &c);
         bool    isInvited(const int client_fd) const;
         bool    isOperator(const int client_fd) const;
+        void    sendNames(const Client &c) const;
 };

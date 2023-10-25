@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 01:11:16 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:08:12 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 // ERR_NOSUCHCHANNEL (403)
 // ERR_NOTONCHANNEL (442)
 // ERR_CHANOPRIVSNEEDED (482)
-# define RPL_NOTOPIC(user_id, client, channel) (std::string("331 ") + user_id + " " + client + " " + channel + " :No topic is set")
+# define RPL_NOTOPIC(client, channel) (std::string("331 ") + client + " " + channel + " :No topic is set")
 # define RPL_TOPIC(client, channel, topic) (std::string("332 ") + client + " " + channel + " " + topic)
 # define RPL_TOPICWHOTIME(client, channel, nick, setat) (std::string("333 ") + client + " " + channel + " " + nick + " " + setat)
 
@@ -60,7 +60,7 @@
 # define ERR_BADCHANMASK(client) (std::string("476 ") + client + " :Bad Channel Mask")
 // RPL_TOPIC (332)
 // RPL_TOPICWHOTIME (333)
-# define RPL_NAMREPLY(client, symbol, channel, prefix, nickname) (std::string("353 ") + client + symbol + channel + " :[" + prefix + "]" + nickname + "{ [" + prefix + "]"+ nickname)
+# define RPL_NAMREPLY(client, channel, prefix, nickname) (std::string("353 ") + client + " = " + channel + " :" + prefix  + nickname)
 # define RPL_ENDOFNAMES(client, channel) (std::string("366 ") + client + channel + " :End of /NAMES list")
 
 //NICK REPLIES

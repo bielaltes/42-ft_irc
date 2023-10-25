@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 00:33:53 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:59:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,6 @@ void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name
 			message.append(" " + info.args[i]);
 		target->sendMessage(message);
 	}
-}
-
-cmd Server::_parse(std::string str, char c)
-{
-    cmd command;
-    std::stringstream ss(str);
-    std::string token;
-    while (std::getline(ss, token, c)) {
-        command.args.push_back(token);
-    }
-    return command;
 }
 
 void	Server::privmsg(int const client_fd, cmd info)

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 00:12:50 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 02:58:54 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,6 @@ void Server::_runCmd(cmd c, int const client_fd)
 //abans de res he de revisar si estan loguejats, he de revisar si rebo comanda PASS i si
 	// client que escriu esta ja loguejat o no.
 
-
-	// int i;//definicio fora de l'if per veure si trobem coincidencia o no dins el for.
-	// for (i = 0; i < 8;i++)//10 is a placeholder
-	// 	if (c.args[0] == cmds[i])
-	// 	{
-	// 		this->execmd[i](client_fd, c);
-	// 		return ;
-	// 	}
-
 	if (c.args[0] == "JOIN")
 	{
 		join(client_fd, c);
@@ -73,12 +64,18 @@ void Server::_runCmd(cmd c, int const client_fd)
 	{
 		privmsg(client_fd, c);
 	}
-
 	if (c.args[0] == "INVITE")
 	{
 		invite(client_fd, c);
 	}
-
+	if (c.args[0] == "TOPIC")
+	{
+		topic(client_fd, c);
+	}
+	if (c.args[0] == "NAMES" && c.args.size() > 1)
+	{
+		names(client_fd, c);
+	}
 	// if (i == 10)//10 is a placeholder
 		// NO COMMAND FOUND; //not sure if we have to throw an exception or?
 }

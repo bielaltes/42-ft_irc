@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 01:13:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 03:40:21 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Channel::Channel(Server *s, const std::string &name, const Client &c)
     _s = s;
     this->_name = name;
     _i = _t = _k = _o = _l = false;
-    this->topic = std::string();
+    this->_topic = std::string();
     this->_members = std::unordered_set<int>();
     this->_invited = std::unordered_set<int>();
     this->_operators = std::unordered_set<int>();
@@ -84,3 +84,21 @@ bool    Channel::isOperator(const int client_fd) const
 {
     return _operators.count(client_fd) > 0;
 }
+
+void Channel::sendNames(const Client &c) const
+{
+    Client  *aux;
+    for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+        aux = _s->getClient(*it);
+        std::string prefix = "";
+        if (isOperator(aux->getFd()))
+            prefix = "@";
+        sendMsg(NULL, RPL_NAMREPLY(c.getNick(), _name, prefix, aux->getNick()));
+    }
+   for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+        aux = _s->getClient(*it);
+        aux->sendMessage(RPL_ENDOFNAMES(aux->getNick(), _name));
+    }
+}
+
+

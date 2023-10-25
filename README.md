@@ -11,3 +11,5 @@ commands that seems to be done:
 - privmsg
 - pass
 - privmsg(?)
+- invite
+- names
