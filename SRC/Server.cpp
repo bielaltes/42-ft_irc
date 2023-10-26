@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 17:49:22 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/25 23:53:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ void Server::_request(int i)
     std::string request(buffer, bytesRead);
     request = _clients[this->_pollsfd[i].fd]->getBuffer() + request;
     std::vector<std::string> aux = _splitByDelimiters(request, "\r\n");
+    if (aux.size() == 0)
+        return ;
     for (size_t j = 0; j < aux.size()-1; ++j)
         _runCmd(_parse(aux[j].c_str(), ' '), this->_pollsfd[i].fd);
     if (request.size() >= 2 && request.substr(request.size()-2, request.size()) == "\r\n")
