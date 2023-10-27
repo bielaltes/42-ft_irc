@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/25 17:27:45 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/27 03:35:28 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = ircserv
 #########
 RM = rm -f
 CC = c++
-CFLAGS = -Werror -Wextra -Wall -std=c++98 -g -fsanitize=address ##
+CFLAGS = -Werror -Wextra -Wall -std=c++98 #-g -fsanitize=address ##
 #########
 
 #########

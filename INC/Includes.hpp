@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 17:47:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 03:29:45 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstring>
+#include <csignal>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/types.h>

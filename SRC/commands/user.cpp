@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:34:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 11:35:31 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 02:09:26 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	Server::user(int const client_fd, cmd info)
 	client->setHostName(hostname); 
 	if (client->getNick() == "")
 		return ;
-	client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.IRC.BieldidNothing", client->getNick(), client->getHostName()));//nook
-	client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.IRC.BieldidNothing"));
-	client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.IRC.BieldidNothing"));
+	client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.Segfault.BieldidNothing", client->getNick(), client->getHostName()));//nook
+	client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.Segfault.BieldidNothing"));
+	client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.Segfault.BieldidNothing"));
 }
