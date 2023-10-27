@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 23:53:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 04:59:19 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ Server::Server(int port,const std::string &psswd)
 
 Server::~Server()
 {
+    std::cout << "server destructor called" << std::endl;
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
     {
         delete (*it).second;
@@ -59,6 +60,7 @@ void handler(int signal) {(void) signal; stop = true;}
 
 void Server::LoopServer()
 {
+    std::signal(SIGINT, handler);
     while (!stop)
     {
         int poll_count = poll(this->_pollsfd.data(), this->_active, -1);
@@ -66,7 +68,6 @@ void Server::LoopServer()
 		{
             std::cerr << "poll() error: " << strerror(errno) << std::endl;
 		}
-
 		for (int i = 0; i < this->_active; i++)
 		{
 			if (this->_pollsfd[i].revents & POLLIN)
@@ -209,8 +210,20 @@ cmd Server::_parse(std::string str, char c)
 
 void Server::_rmClient(const Client &c)
 {
+    std::vector<std::string>    rmChannel;
     for (size_t i = 0; i < _channels.size(); ++i)
+    {
         _channels[i]->rmClient(c);
+        if (_channels[i]->getUsersNumber() == 0)
+            rmChannel.push_back(_channels[i]->getName());
+    }
+    for (size_t i = 0; i < rmChannel.size(); i++)
+    {
+        int ch = _searchChannel(rmChannel[i]);
+        delete _channels[ch];
+        _channels.erase(_channels.begin() + ch);
+    }
+    std::cout << _channels.size() << std::endl;
     for (size_t i = 0; i < _pollsfd.size(); ++i)
     {
         if (c.getFd() == _pollsfd[i].fd)
@@ -220,8 +233,8 @@ void Server::_rmClient(const Client &c)
             break;
         }
     }
-
     close(c.getFd());
+    delete _clients[c.getFd()];
     _clients.erase(c.getFd());
 }
 

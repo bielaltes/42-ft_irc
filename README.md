@@ -2,6 +2,8 @@ TO DO:
 - gestionar el ^D. fer que fins que no rebem \r\n seguim llegint d'aquell client.
 - 
 
+if (_existsClientUser("hola") || _existsClientNick("hola"))
+return ;
 
 
 

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:06:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 22:41:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 02:54:38 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void	Server::kick(int const client_fd, cmd info)
 		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel->getName()));
 		return ;
 	}
-	// int	user = _searchUser()
-	// Client	*target = _channels[ch]
+	int	user = _searchUser(info.args[2]);
+	if (user == -1 || user == client_fd)
+		return ;
+	Client	*target = _clients[user];
 	std::string kickmsg = client->getNick() + "!" + client->getHostName() +\
 	" KICK " + channel->getName() + " " + info.args[2] + " Kicked from channel";
 	channel->sendMsg(NULL, kickmsg);
-	channel->rmClient(*client);
+	channel->rmClient(*target);
 }
