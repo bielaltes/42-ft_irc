@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 17:51:06 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:57:26 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ Channel::Channel(Server *s, const std::string &name, const Client &c)
 
 Channel::~Channel()
 {
-
 }
 
 void Channel::addClient(const Client &c)
