@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:13:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:09:37 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 08:32:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,28 @@ void	Server::topic(int const client_fd, cmd info)
 		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel->getName()));
 		return ;
 	}
-	if (channel->getT() && !channel->isOperator(client_fd))
+	if (info.args.size() > 2 && channel->getT() && !channel->isOperator(client_fd))
 	{
 		client->sendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel->getName()));
 		return ;
 	}
-	if (info.args.size() == 2)
+	if (info.args.size() > 2 && info.args[2] == ":")
 	{
 		channel->setTopic("");
+		std::string topicmsg = "TOPIC " + channel->getName() + " :" + channel->getTopic();
+		channel->sendMsg(NULL, topicmsg);
 		return ;
 	}
-	std::string message = info.args[2];
-	for (unsigned long i = 3; i < info.args.size(); i++)
-		message.append(" " + info.args[i]);
-	channel->setTopic(message);
-	std::string topicmsg = "TOPIC " + channel->getName() + " :" + channel->getTopic();
-	channel->sendMsg(NULL, topicmsg);
+	if (info.args.size() > 2)
+	{
+		std::string message = info.args[2];
+		for (unsigned long i = 3; i < info.args.size(); i++)
+			message.append(" " + info.args[i]);
+		channel->setTopic(message);
+		channel->sendMsg(NULL, RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic()));
+		channel->sendMsg(NULL, RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), currentTime()));
+	}
+	else
+		client->sendMessage(RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic()));
+		client->sendMessage(RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), currentTime()));
 }
