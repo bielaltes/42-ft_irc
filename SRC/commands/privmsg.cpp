@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 06:11:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:38:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_na
 	for (unsigned long i = 2; i < info.args.size(); i++)
 		message.append(" " + info.args[i]);
 	_channels[tst]->sendMsg(*client, message);
+	if (info.args[2] == ":hola" || info.args[2] == "hola")
+	{
+		std::string	botResponse = ":SegfaultBot PRIVMSG " + _channels[tst]->getName() + " Segmentation fault detected";
+		client->sendMessage(botResponse);
+	}
 }
 
 void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name)
