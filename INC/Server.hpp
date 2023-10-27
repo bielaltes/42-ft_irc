@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:50:09 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 07:10:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Server
         void _rmClient(const Client &c);
         std::vector<std::string> _splitByDelimiters(const std::string& input, const std::string& delimiters);
         void    join(int const client_fd, cmd info);
+        int     joinSingle(int const client_fd, cmd info, std::string target, int pwdNum);
         void    pass(int const client_fd, cmd info);
         void    user(int const client_fd, cmd info);
         void    nick(int const client_fd, cmd info);
@@ -57,7 +58,10 @@ class Server
         void    names(int const client_fd, cmd info);
         void    mode(int const client_fd, cmd info);
         void    kick(int const client_fd, cmd info);
+        Client  *kickSingle(int const client_fd, std::string target, Channel *channel);
         std::string currentTime();
+        cmd  getPwds(cmd info);
+
     public:
         Server(int port, const std::string &psswd);
         ~Server();
