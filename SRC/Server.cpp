@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/27 06:31:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 09:11:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ Server::Server(int port,const std::string &psswd)
 
 Server::~Server()
 {
-    std::cout << "server destructor called" << std::endl;
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
     {
         delete (*it).second;
@@ -80,9 +79,6 @@ void Server::LoopServer()
                 }
 			}
 		}
-        if (_existsClientUser("hola") || _existsClientNick("hola"))
-            return ;
-
     }
 }
 
@@ -226,7 +222,6 @@ void Server::_rmClient(const Client &c)
         delete _channels[ch];
         _channels.erase(_channels.begin() + ch);
     }
-    std::cout << _channels.size() << std::endl;
     for (size_t i = 0; i < _pollsfd.size(); ++i)
     {
         if (c.getFd() == _pollsfd[i].fd)
