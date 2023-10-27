@@ -6,11 +6,37 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:06:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 02:54:38 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 07:08:57 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
+
+Client	*Server::kickSingle(int const client_fd, std::string target, Channel *channel)
+{
+	Client		*client = _clients[client_fd]; 
+	
+	if (!channel->isMember(target))
+	{
+		client->sendMessage(ERR_USERNOTINCHANNEL(client->getNick(), target,\
+		channel->getName()));
+		return NULL;
+	}
+	if (!channel->isMember(client->getNick()))
+	{
+		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel->getName()));
+		return NULL;
+	}
+	int	user = _searchUser(target);
+	if (user == -1 || user == client_fd)
+		return NULL;
+	Client	*cTarget = _clients[user];
+	std::string kickmsg = ":" + client->getNick() + "!" + client->getHostName() +\
+	" KICK " + channel->getName() + " " + cTarget->getName() + " Kicked from channel";
+	channel->sendMsg(NULL, kickmsg);
+	channel->rmClient(*cTarget);
+	return cTarget;
+}
 
 void	Server::kick(int const client_fd, cmd info)
 {
@@ -33,23 +59,17 @@ void	Server::kick(int const client_fd, cmd info)
 		client->sendMessage(ERR_CHANOPRIVSNEEDED(client->getNick(), channel->getName()));
 		return ;
 	}
-	if (!channel->isMember(info.args[2]))
+	size_t found = info.args[2].find(',');
+	if (found != std::string::npos)
 	{
-		client->sendMessage(ERR_USERNOTINCHANNEL(client->getNick(), info.args[2],\
-		channel->getName()));
-		return ;
+		unsigned long i;
+		cmd targets = _parse(info.args[2], ',');
+		for (i = 0; i < targets.args.size(); i++)
+		{
+			kickSingle(client_fd, targets.args[i], channel);
+		}
 	}
-	if (!channel->isMember(client->getNick()))
-	{
-		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel->getName()));
-		return ;
-	}
-	int	user = _searchUser(info.args[2]);
-	if (user == -1 || user == client_fd)
-		return ;
-	Client	*target = _clients[user];
-	std::string kickmsg = client->getNick() + "!" + client->getHostName() +\
-	" KICK " + channel->getName() + " " + info.args[2] + " Kicked from channel";
-	channel->sendMsg(NULL, kickmsg);
-	channel->rmClient(*target);
+	else
+		kickSingle(client_fd, info.args[2], channel);
+
 }

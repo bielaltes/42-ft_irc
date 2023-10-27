@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:07:35 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/27 07:18:23 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	Server::mode(int const client_fd, cmd info)
 		}
 	}
 	std::string modeActivated = ":" + client->getNick() + "!" + \
-	client->getHostName() + "MODE" + channel->getName() + " ";
+	client->getHostName() + " MODE " + channel->getName() + " ";
 	if (modes[0].size() > 1)
 		modeActivated.append(modes[0]);
 	if (modes[1].size() > 1)
