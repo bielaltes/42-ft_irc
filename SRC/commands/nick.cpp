@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 02:18:52 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:16:36 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	Server::nick(int const client_fd, cmd info)
 	client->setNick(info.args[1]);
 	if (client->getName() == "")
 		return ;
+	client->setReg();
 	client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.Segfault.BieldidNothing", client->getNick(), client->getHostName()));//nook
 	client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.Segfault.BieldidNothing"));
 	client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.Segfault.BieldidNothing"));

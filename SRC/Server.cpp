@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/27 19:31:29 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/28 10:48:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void handler(int signal) {(void) signal; stop = true;}
 
 void Server::LoopServer()
 {
-    // std::signal(SIGINT, handler);
+    std::signal(SIGINT, handler);
     while (!stop)
     {
         int poll_count = poll(this->_pollsfd.data(), this->_active, -1);

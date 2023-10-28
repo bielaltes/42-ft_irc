@@ -7,6 +7,8 @@ return ;
 
 
 
+GESTIONAR QUE QUAN FAIG EL JOIN INDICA AL CLIENT QUE N TOCA.
+
 commands that seems to be done:
 - user
 - nick
