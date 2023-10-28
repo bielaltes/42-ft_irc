@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:53:58 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:19:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ cmd Server::_parse(const char *str, char c)
 
 void Server::_runCmd(cmd c, int const client_fd)
 {
-	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS")
+	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS" ||\
+	(!_clients[client_fd]->Registered() && c.args[0] != "USER" && c.args[0] != "NICK"))
 	{
 		if (c.args[0] == "PASS")
 			pass(client_fd, c);

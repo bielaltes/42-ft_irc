@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:06:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:51:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:30:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,13 @@ void	Server::names(int const client_fd, cmd info)
 void Channel::sendNames(const Client &c) const
 {
     Client  *aux;
-    sendMsg(NULL, RPL_NAMREPLY(c.getNick(), _name, "", "SegfaultBot"));
+    c.sendMessage(RPL_NAMREPLY(c.getNick(), _name, "", "SegfaultBot"));
     for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
         aux = _s->getClient(*it);
         std::string prefix = "";
         if (isOperator(aux->getFd()))
             prefix = "@";
-        sendMsg(NULL, RPL_NAMREPLY(c.getNick(), _name, prefix, aux->getNick()));
+        c.sendMessage(RPL_NAMREPLY(c.getNick(), _name, prefix, aux->getNick()));
     }
-   for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
-        aux = _s->getClient(*it);
-        aux->sendMessage(RPL_ENDOFNAMES(aux->getNick(), _name));
-    }
+    c.sendMessage(RPL_ENDOFNAMES(c.getNick(), _name));
 }
