@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/28 11:16:36 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:47:04 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	Server::nick(int const client_fd, cmd info)
 		client->sendMessage(ERR_NONICKNAMEGIVEN(client->getNick()));
 		return ;
 	}
-	if (parseNick(client->getNick()))
+	if (parseNick(info.args[1]))
 	{
 		client->sendMessage(ERR_ERRONEUSNICKNAME(client->getName(), info.args[1]));
 		return ;
@@ -42,8 +42,13 @@ void	Server::nick(int const client_fd, cmd info)
 	client->setNick(info.args[1]);
 	if (client->getName() == "")
 		return ;
-	client->setReg();
-	client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.Segfault.BieldidNothing", client->getNick(), client->getHostName()));//nook
-	client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.Segfault.BieldidNothing"));
-	client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.Segfault.BieldidNothing"));
+	if (!client->Registered())
+	{
+		client->setReg();
+		client->sendMessage(RPL_WELCOME(client->getNick(), "Jareste.Segfault.BieldidNothing", client->getNick(), client->getHostName()));//nook
+		client->sendMessage(RPL_YOURHOST(client->getNick(), "Jareste.Segfault.BieldidNothing"));
+		client->sendMessage(RPL_MYINFO(client->getNick(), "Jareste.Segfault.BieldidNothing"));
+	}
+	else
+		client->sendMessage(":" + client->getName() + " NICK " +client->getNick());
 }

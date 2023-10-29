@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/28 10:48:49 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:45:46 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,9 +231,10 @@ void Server::_rmClient(const Client &c)
             break;
         }
     }
-    close(c.getFd());
-    delete _clients[c.getFd()];
-    _clients.erase(c.getFd());
+    int fd = c.getFd();
+    close(fd);
+    delete _clients[fd];
+    _clients.erase(fd);
 }
 
 std::string Server::currentTime()

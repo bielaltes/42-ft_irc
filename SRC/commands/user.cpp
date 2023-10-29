@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:34:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/28 11:16:29 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:36:25 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	Server::user(int const client_fd, cmd info)
 		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 		return ;
 	}
-	if (_existsClientUser(info.args[1]))
+	if (_existsClientUser(info.args[1]) || client->Registered())
 	{
 		client->sendMessage(ERR_ALREADYREGISTERED(client->getNick()));
 		return ;

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:13 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/27 03:29:45 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:25:54 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <vector>
 #include <map>
 #include <unordered_set>
+#include <algorithm>
 
 #include "Server.hpp"
 #include "Client.hpp"
