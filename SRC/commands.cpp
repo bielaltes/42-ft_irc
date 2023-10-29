@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/28 11:19:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:49:36 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@ cmd Server::_parse(const char *str, char c)
     return command;
 }
 
+static bool is_empty(const std::string& str) {
+    return str.empty();
+}
+
 void Server::_runCmd(cmd c, int const client_fd)
 {
+	c.args.erase(std::remove_if(c.args.begin(), c.args.end(), is_empty), c.args.end());
 	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS" ||\
 	(!_clients[client_fd]->Registered() && c.args[0] != "USER" && c.args[0] != "NICK"))
 	{

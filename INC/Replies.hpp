@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 08:33:24 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:40:28 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@
 
 //NICK REPLIES
 # define ERR_NONICKNAMEGIVEN(client) (std::string("431 ") + client + " :No nickname given")
-# define ERR_ERRONEUSNICKNAME(client, nickname) (std::string("431 ") + client + nickname + " :Erroneus nickname")
-# define ERR_NICKNAMEINUSE(client, nickname) (std::string("433 ") + client + nickname + " :Nickname is already in use")
-# define ERR_NICKCOLLISION(client, nickname, user, host) (std::string("436 ") + client + nickname + " :Nickname collision KILL from " + user + "@" + host)
+# define ERR_ERRONEUSNICKNAME(client, nickname) (std::string("431 ") + client + " " +  nickname + " :Erroneus nickname")
+# define ERR_NICKNAMEINUSE(client, nickname) (std::string("433 ") + client + " " + nickname + " :Nickname is already in use")
+# define ERR_NICKCOLLISION(client, nickname, user, host) (std::string("436 ") + client + " " +  nickname + " :Nickname collision KILL from " + user + "@" + host)
 
 //PRIVMSG REPLIES
 # define ERR_NOSUCHNICK(client, nickname) (std::string("401 ") + client + nickname + " :No suck nick/channel")
