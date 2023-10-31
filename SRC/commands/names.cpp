@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:06:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 00:10:48 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:29:27 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
 
-void	Server::names(int const client_fd, cmd &info)
+void	Server::_names(int const client_fd, cmd &info)
 {
 	Client	*client = _clients[client_fd];
 
@@ -23,12 +23,12 @@ void	Server::names(int const client_fd, cmd &info)
 		if (ch != -1)
 		{
 			Channel *channel = _channels[ch];
-			channel->sendNames(*client);		
+			channel->_sendNames(*client);		
 		}
 	}
 }
 
-void Channel::sendNames(const Client &c) const
+void Channel::_sendNames(const Client &c) const
 {
     Client  *aux;
     c.sendMessage(RPL_NAMREPLY(c.getNick(), _name, "", "SegfaultBot"));

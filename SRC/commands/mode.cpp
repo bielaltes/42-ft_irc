@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 03:33:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:02:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ static bool	findLetter(std::string const &s, char const c)
 		if (s[i] == c)
 			return true;
 	return false;
+}
+
+static void eraseChar(std::string &str, char c)
+{
+    for (std::string::iterator it = str.begin(); it != str.end(); ) {
+	    if (*it == c) {
+	        it = str.erase(it);
+	    } else {
+	        ++it;
+	    }
+	}
 }
 
 static std::map<std::string, std::string> parseMode(std::string &s)
@@ -56,6 +67,8 @@ static std::map<std::string, std::string> parseMode(std::string &s)
 		if (findLetter("kol", s[i]) && !findLetter(modes["order"] + "+-", s[i]))
 			modes["order"] = s[i] + modes["order"];
 	}
+	if (findLetter(modes["-"], 'l') && findLetter(modes["order"], 'l'))
+		eraseChar(modes["order"], 'l');
 	std::cout << "+: " << modes["+"] << "|-: " << modes["-"] << "|order: " << modes["order"] << std::endl;
 	return modes;
 }
@@ -73,19 +86,7 @@ static int	orderPosition(std::string &s, char c)
 	return i;
 }
 
-static void eraseChar(std::string &str, char c)
-{
-    for (std::string::iterator it = str.begin(); it != str.end(); ) {
-	    if (*it == c) {
-	        it = str.erase(it);
-	    } else {
-	        ++it;
-	    }
-	}
-	// return str;
-}
-
-void	Server::mode(int const client_fd, cmd &info)
+void	Server::_mode(int const client_fd, cmd &info)
 {
 	Client		*client = _clients[client_fd]; 
 	std::string pass;
@@ -171,7 +172,68 @@ void	Server::mode(int const client_fd, cmd &info)
 			}
 		}
 		if (findLetter(modes["+"], 'o'))
-			channel->setO(true);	
+		{
+			if (info.args.size() < 4)
+			{
+				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+				return ;
+			}
+			int position = orderPosition(modes["order"], 'o');
+			switch (position)
+			{
+				case 0:
+				{
+					pass = info.args[3];
+					break ;
+				}
+				case 1:
+				{
+					if (info.args.size() >= 5)
+						pass = info.args[4];
+					else 
+					{
+						client->sendMessage(ERR_NEEDMOREPARAMS(\
+						client->getNick(), info.args[0] + " +o"));
+						eraseChar(modes["+"], '-');
+					}
+					break ;
+				}
+				case 2:
+				{
+					if (info.args.size() >= 6)
+						pass = info.args[5];
+					else
+					{
+						client->sendMessage(ERR_NEEDMOREPARAMS(\
+						client->getNick(), info.args[0] + " +o"));
+						eraseChar(modes["+"], 'o');
+					}
+					break ;
+				}
+			};
+			if (findLetter(modes["+"], 'o'))
+			{
+				int	target_fd = _searchUser(pass);
+				std::cout << channel->isOperator(target_fd) << std::endl;
+				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
+				{
+					Client *target = _clients[target_fd];
+					channel->addOperator(*target);
+				}
+				else if (!channel->isOperator(client_fd))
+				{
+					client->sendMessage(ERR_CHANOPRIVSNEEDED(\
+					client->getNick(), channel->getName()));
+					eraseChar(modes["+"], 'o');
+				}
+				else if (!channel->isMember(pass))
+				{
+					client->sendMessage(ERR_USERNOTINCHANNEL(\
+					client->getNick(), pass, channel->getName()));
+					eraseChar(modes["+"], 'o');
+				}
+			}
+		}
 		if (findLetter(modes["+"], 'l'))
 		{
 			if (info.args.size() < 4)
@@ -285,11 +347,72 @@ void	Server::mode(int const client_fd, cmd &info)
 			}
 		}
 		if (findLetter(modes["-"], 'o'))
-			channel->setO(false);	
+		{
+			if (info.args.size() < 4)
+			{
+				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+				return ;
+			}
+			int position = orderPosition(modes["order"], 'o');
+			switch (position)
+			{
+				case 0:
+				{
+					pass = info.args[3];
+					break ;
+				}
+				case 1:
+				{
+					if (info.args.size() >= 5)
+						pass = info.args[4];
+					else 
+					{
+						client->sendMessage(ERR_NEEDMOREPARAMS(\
+						client->getNick(), info.args[0] + " -o"));
+						eraseChar(modes["-"], 'o');
+					}
+					break ;
+				}
+				case 2:
+				{
+					if (info.args.size() >= 6)
+						pass = info.args[5];
+					else
+					{
+						client->sendMessage(ERR_NEEDMOREPARAMS(\
+						client->getNick(), info.args[0] + " -o"));
+						eraseChar(modes["-"], 'o');
+					}
+					break ;
+				}
+			};
+			if (findLetter(modes["-"], 'o'))
+			{
+				int	target_fd = _searchUser(pass);
+				std::cout << channel->isOperator(target_fd) << std::endl;
+				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
+				{
+					Client *target = _clients[target_fd];
+					channel->rmOperator(*target);
+				}
+				else if (!channel->isOperator(client_fd))
+				{
+					client->sendMessage(ERR_CHANOPRIVSNEEDED(\
+					client->getNick(), channel->getName()));
+					eraseChar(modes["-"], 'o');
+				}
+				else if (!channel->isMember(pass))
+				{
+					client->sendMessage(ERR_USERNOTINCHANNEL(\
+					client->getNick(), pass, channel->getName()));
+					eraseChar(modes["-"], 'o');
+				}
+			}
+		}
 		if (findLetter(modes["-"], 'l'))
 		{
 			channel->setL(false);
-			channel->setLimit(std::atoi(""));
+			channel->setLimit(0);
 		}
 	}
 	if ((modes["+"].size() + modes["-"].size()) == 2)

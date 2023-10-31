@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:45:25 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 17:09:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:18:37 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,4 @@ void Client::sendMessage(const std::string &s) const
 {
     std::string message = s + "\r\n";
     send(this->_fd, message.c_str(), message.size(), 0);
-    
 }

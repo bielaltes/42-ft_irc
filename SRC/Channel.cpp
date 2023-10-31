@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/30 23:49:42 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:06:22 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ Channel::~Channel()
 void Channel::addClient(const Client &c)
 {
     _members.insert(c.getFd());
+}
+
+void    Channel::addOperator(const Client &c)
+{
+    _operators.insert(c.getFd());
+}
+
+void Channel::rmOperator(const Client &c)
+{
+    _operators.erase(c.getFd());
 }
 
 void Channel::rmClient(const Client &c)

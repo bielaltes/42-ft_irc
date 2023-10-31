@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/30 23:57:50 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:06:25 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ class Channel
         //functions
         void    addClient(const Client &c);
         void    rmClient(const Client &c);
+        void    addOperator(const Client &c);
+        void    rmOperator(const Client &c);
 
         void    sendMsg(const Client &c, const std::string &msg) const;
 
@@ -72,5 +74,5 @@ class Channel
         void    invite(const Client &c);
         bool    isInvited(const int client_fd) const;
         bool    isOperator(const int client_fd) const;
-        void    sendNames(const Client &c) const;
+        void    _sendNames(const Client &c) const;
 };

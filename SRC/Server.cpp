@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/31 03:06:47 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:17:20 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void Server::LoopServer()
     std::signal(SIGINT, handler);
     while (!stop)
     {
+        for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+        {
+            std::cout << it->second << std::endl;
+        }
         int poll_count = poll(this->_pollsfd.data(), this->_active, -1);
 		if (poll_count == -1)
 		{
@@ -111,13 +115,13 @@ void Server::_request(int i)
         std::cerr << "recv() error: " << std::strerror(errno) << std::endl;
         return;
     }
-
     if (bytesRead == 0) {
         _rmClient(*_clients[this->_pollsfd[i].fd]);
         return;
     }
     std::string request(buffer, bytesRead);
     request = _clients[this->_pollsfd[i].fd]->getBuffer() + request;
+    std::cout << "request:" << request << std::endl;
     std::vector<std::string> aux = _splitByDelimiters(request, "\r\n");
     if (aux.size() == 0)
         return ;
@@ -237,7 +241,7 @@ void Server::_rmClient(const Client &c)
     _clients.erase(fd);
 }
 
-std::string Server::currentTime()
+std::string Server::_currentTime()
 {
     time_t t = std::time(0);
     struct tm *now = std::localtime(&t);
