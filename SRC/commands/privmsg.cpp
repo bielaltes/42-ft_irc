@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:38:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:28:18 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_name)
+void	Server::_privmsgChannel(int const client_fd, cmd &info, std::string &target_name)
 {
 	Client		*client = _clients[client_fd]; 
 
@@ -40,7 +40,7 @@ void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_na
 	}
 }
 
-void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name)
+void	Server::_privmsgUsers(int const client_fd, cmd &info, std::string &target_name)
 {
 	Client		*client = _clients[client_fd]; 
 	std::string	nickname = client->getNick();
@@ -73,7 +73,7 @@ void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name
 	}
 }
 
-void	Server::privmsg(int const client_fd, cmd info)
+void	Server::_privmsg(int const client_fd, cmd &info)
 {
 	if (info.args.size() > 1)
 	{
@@ -84,16 +84,16 @@ void	Server::privmsg(int const client_fd, cmd info)
 			for (unsigned long i = 0; i < targets.args.size(); i++)
 			{		
 				if (targets.args[i][0] == '#' || targets.args[i][0] == '&')
-					privmsgChannel(client_fd, info, targets.args[i]);
+					_privmsgChannel(client_fd, info, targets.args[i]);
 				else
-					privmsgUsers(client_fd, info, targets.args[i]);
+					_privmsgUsers(client_fd, info, targets.args[i]);
 			}
 		}
 		else
 			if (info.args[1][0] == '#' || info.args[1][0] == '&')
-				privmsgChannel(client_fd, info, info.args[1]);
+				_privmsgChannel(client_fd, info, info.args[1]);
 			else
-				privmsgUsers(client_fd, info, info.args[1]);
+				_privmsgUsers(client_fd, info, info.args[1]);
 	}
 	else
 		_clients[client_fd]->sendMessage(ERR_NORECIPIENT(_clients[client_fd]->getNick(), "PRIVMSG"));

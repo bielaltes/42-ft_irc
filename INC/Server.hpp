@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:31:33 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:23:56 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,16 @@ typedef struct cmd
     std::vector<std::string> args;
 } cmd;
 
-class Server
+template <typename T>
+std::string to_string(const T& value)
 {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+    class Server
+    {
     private:
         std::vector<pollfd> _pollsfd;
         std::string _psswd;
@@ -45,22 +53,22 @@ class Server
         bool _existsClientUser(const std::string &user);
         void _rmClient(const Client &c);
         std::vector<std::string> _splitByDelimiters(const std::string& input, const std::string& delimiters);
-        void    join(int const client_fd, cmd info);
-        int     joinSingle(int const client_fd, cmd info, std::string target, int pwdNum);
-        void    pass(int const client_fd, cmd info);
-        void    user(int const client_fd, cmd info);
-        void    nick(int const client_fd, cmd info);
-        void    privmsg(int const client_fd, cmd info);
-        void    privmsgUsers(int const client_fd, cmd info, std::string target_name);
-        void    privmsgChannel(int const client_fd, cmd info, std::string target_name);
-        void    invite(int const client_fd, cmd info);
-        void    topic(int const client_fd, cmd info);
-        void    names(int const client_fd, cmd info);
-        void    mode(int const client_fd, cmd info);
-        void    kick(int const client_fd, cmd info);
-        Client  *kickSingle(int const client_fd, std::string target, Channel *channel);
-        std::string currentTime();
-        cmd  getPwds(cmd info);
+        void    _join(int const client_fd, cmd &info);
+        int     _joinSingle(int const client_fd, cmd &info, std::string &target, int pwdNum);
+        void    _pass(int const client_fd, cmd &info);
+        void    _user(int const client_fd, cmd &info);
+        void    _nick(int const client_fd, cmd &info);
+        void    _privmsg(int const client_fd, cmd &info);
+        void    _privmsgUsers(int const client_fd, cmd &info, std::string &target_name);
+        void    _privmsgChannel(int const client_fd, cmd &info, std::string &target_name);
+        void    _invite(int const client_fd, cmd &info);
+        void    _topic(int const client_fd, cmd &info);
+        void    _names(int const client_fd, cmd &info);
+        void    _mode(int const client_fd, cmd &info);
+        void    _kick(int const client_fd, cmd &info);
+        Client  *_kickSingle(int const client_fd, std::string &target, Channel *channel);
+        std::string _currentTime();
+        cmd  _getPwds(cmd &info);
 
     public:
         Server(int port, const std::string &psswd);

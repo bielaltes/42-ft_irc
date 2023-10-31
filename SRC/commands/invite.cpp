@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/25 17:09:58 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:24:20 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-void	Server::invite(int client_fd, cmd info)
+void	Server::_invite(int client_fd, cmd &info)
 {
 	Client		*client = _clients[client_fd]; 
 
@@ -23,7 +23,7 @@ void	Server::invite(int client_fd, cmd info)
 	}
 	std::string	channel_name = info.args[2];
 	std::string	invited_client = info.args[1];
-	std::string s_client_fd = std::to_string(client_fd);
+	std::string s_client_fd = to_string(client_fd);
 
 	int ch_num = _searchChannel(channel_name);
 	Channel	*channel = _channels[ch_num];
@@ -57,4 +57,3 @@ void	Server::invite(int client_fd, cmd info)
 	}
 	return ;
 }
-

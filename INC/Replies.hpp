@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 19:58:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/29 12:40:28 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:18:39 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@
 # define ERR_NICKCOLLISION(client, nickname, user, host) (std::string("436 ") + client + " " +  nickname + " :Nickname collision KILL from " + user + "@" + host)
 
 //PRIVMSG REPLIES
-# define ERR_NOSUCHNICK(client, nickname) (std::string("401 ") + client + nickname + " :No suck nick/channel")
-# define ERR_CANNOTSENDTOCHAN(client, channel) (std::string("404 ") + client + channel + " :Cannot send to channel")
+# define ERR_NOSUCHNICK(client, nickname) (std::string("401 ") + client + " " + nickname + " :No suck nick/channel")
+# define ERR_CANNOTSENDTOCHAN(client, channel) (std::string("404 ") + client + " " + channel + " :Cannot send to channel")
 # define ERR_NORECIPIENT(client, command) (std::string("411 ") + client + " :No recipient given " + command)
 # define ERR_NOTEXTTOSEND(client) (std::string("412 ") + client + " :No text to send")
-# define RPL_AWAY(client, nick, message) (std::string("301 ") + client + nick + " :" + message)
+# define RPL_AWAY(client, nick, message) (std::string("301 ") + client + " " + nick + " :" + message)
 // ERR_TOOMANYTARGETS (407)
 // ERR_NOTOPLEVEL (413)
 // ERR_WILDTOPLEVEL (414)

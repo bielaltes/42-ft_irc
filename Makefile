@@ -6,7 +6,7 @@
 #    By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 16:37:47 by jareste-          #+#    #+#              #
-#    Updated: 2023/10/29 12:28:04 by jareste-         ###   ########.fr        #
+#    Updated: 2023/10/31 10:27:48 by jareste-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@ NAME = ircserv
 #########
 RM = rm -f
 CC = c++
-CFLAGS = -Werror -Wextra -Wall -std=c++98 -g -fsanitize=address ##
+CFLAGS = -Werror -Wextra -Wall -std=c++98 -g -fsanitize=address 
 #########
 
 #########
-FILES = SRC/main Server Client join pass privmsg user commands Channel \
+FILES = main Server Client join pass privmsg user commands Channel \
 		nick invite topic names mode kick
 
 SRC = $(addsuffix .cpp, $(FILES))

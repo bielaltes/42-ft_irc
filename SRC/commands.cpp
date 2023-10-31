@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/29 12:49:36 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:26:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,50 +29,56 @@ static bool is_empty(const std::string& str) {
 
 void Server::_runCmd(cmd c, int const client_fd)
 {
-	c.args.erase(std::remove_if(c.args.begin(), c.args.end(), is_empty), c.args.end());
+	for (std::vector<std::string>::iterator it = c.args.begin(); it != c.args.end(); )
+	{
+		if (is_empty(*it))
+		    it = c.args.erase(it);
+		else
+	    ++it;
+	}
 	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS" ||\
 	(!_clients[client_fd]->Registered() && c.args[0] != "USER" && c.args[0] != "NICK"))
 	{
 		if (c.args[0] == "PASS")
-			pass(client_fd, c);
+			_pass(client_fd, c);
 	}
 	else
 	{
 		if (c.args[0] == "JOIN")
 		{
-			join(client_fd, c);
+			_join(client_fd, c);
 		}
 		if (c.args[0] == "USER")
 		{
-			user(client_fd, c);
+			_user(client_fd, c);
 		}
 		if (c.args[0] == "NICK")
 		{
-			nick(client_fd, c);
+			_nick(client_fd, c);
 		}
 		if (c.args[0] == "PRIVMSG")
 		{
-			privmsg(client_fd, c);
+			_privmsg(client_fd, c);
 		}
 		if (c.args[0] == "INVITE")
 		{
-			invite(client_fd, c);
+			_invite(client_fd, c);
 		}
 		if (c.args[0] == "TOPIC")
 		{
-			topic(client_fd, c);
+			_topic(client_fd, c);
 		}
 		if (c.args[0] == "NAMES" && c.args.size() > 1)
 		{
-			names(client_fd, c);
+			_names(client_fd, c);
 		}
 		if (c.args[0] == "MODE")
 		{
-			mode(client_fd, c);
+			_mode(client_fd, c);
 		}
 		if (c.args[0] == "KICK")
 		{
-			kick(client_fd, c);
+			_kick(client_fd, c);
 		}
 	}
 }

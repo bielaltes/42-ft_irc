@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:38:29 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/29 12:47:04 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:24:58 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static bool	parseNick(std::string nick)
 	return false;
 }
 
-void	Server::nick(int const client_fd, cmd info)
+void	Server::_nick(int const client_fd, cmd &info)
 {	
 	Client		*client = _clients[client_fd]; 
 
