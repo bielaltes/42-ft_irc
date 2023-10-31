@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:13:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:57:19 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:10:57 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
 
-void	Server::topic(int const client_fd, cmd info)
+void	Server::topic(int const client_fd, cmd &info)
 {
 	Client		*client = _clients[client_fd]; 
 

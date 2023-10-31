@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 07:16:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:12:45 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-cmd	Server::getPwds(cmd info)
+cmd	Server::getPwds(cmd &info)
 {
 	cmd pwds;
 	if (info.args.size() > 2)
@@ -23,7 +23,7 @@ cmd	Server::getPwds(cmd info)
 	return pwds;
 }
 
-int	Server::joinSingle(int const client_fd, cmd info, std::string target, int pwdNum)
+int	Server::joinSingle(int const client_fd, cmd &info, std::string &target, int pwdNum)
 {
 	Client		*client = _clients[client_fd]; 
 
@@ -47,7 +47,7 @@ int	Server::joinSingle(int const client_fd, cmd info, std::string target, int pw
 			client->sendMessage(ERR_INVITEONLYCHAN(client->getNick(), channel->getName()));
 			return 0;
 		}
-		if (channel->getL() && channel->getLimit() > channel->getUsersNumber())
+		if (channel->getL() && channel->getLimit() <= channel->getUsersNumber())
 		{
 			client->sendMessage(ERR_CHANNELISFULL(client->getNick(), channel->getName()));
 			return 0;
@@ -71,7 +71,7 @@ int	Server::joinSingle(int const client_fd, cmd info, std::string target, int pw
 	return 0;
 }
 
-void	Server::join(int const client_fd, cmd info)
+void	Server::join(int const client_fd, cmd &info)
 {	
 	Client		*client = _clients[client_fd]; 
 
@@ -91,19 +91,6 @@ void	Server::join(int const client_fd, cmd info)
 		}
 	}
 	else
-		joinSingle(client_fd, info, info.args[1], info.args[2].length());
+		joinSingle(client_fd, info, info.args[1], 0);
 
 }
-
-		// size_t found = info.args[1].find(',');
-		// if (found != std::string::npos)
-		// {
-		// 	cmd targets = _parse(info.args[1], ',');
-		// 	for (unsigned long i = 0; i < targets.args.size(); i++)
-		// 	{		
-		// 		if (targets.args[i][0] == '#' || targets.args[i][0] == '&')
-		// 			privmsgChannel(client_fd, info, targets.args[i]);
-		// 		else
-		// 			privmsgUsers(client_fd, info, targets.args[i]);
-		// 	}
-		// }

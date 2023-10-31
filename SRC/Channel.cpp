@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:26:09 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/27 19:57:26 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/30 23:49:42 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ Channel::Channel(Server *s, const std::string &name, const Client &c)
     this->_name = name;
     _i = _t = _k = _o = _l = false;
     this->_topic = std::string();
-    this->_members = std::unordered_set<int>();
-    this->_invited = std::unordered_set<int>();
-    this->_operators = std::unordered_set<int>();
+    this->_members = std::set<int>();
+    this->_invited = std::set<int>();
+    this->_operators = std::set<int>();
     this->addClient(c);
     this->_operators.insert(c.getFd());
 }
@@ -43,7 +43,7 @@ void Channel::rmClient(const Client &c)
 void Channel::sendMsg(const Client &c, const std::string &msg) const
 {
     Client *aux;
-    for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+    for (std::set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
         aux = _s->getClient(*it);
         if (c.getNick() != aux->getNick())
             aux->sendMessage(msg);
@@ -52,7 +52,7 @@ void Channel::sendMsg(const Client &c, const std::string &msg) const
 
 bool Channel::isMember(const std::string &nick)
 {
-    std::unordered_set<int>::const_iterator it = _members.begin();
+    std::set<int>::const_iterator it = _members.begin();
     Client *aux;
     while (it != _members.end())
     {
@@ -103,8 +103,8 @@ std::string Channel::getModeArguments()
     if (_k && !_l)
         arguments.append(_pass);
     if (_l && !_k)
-        arguments.append(std::to_string(_limit));
+        arguments.append(to_string(_limit));
     if (_k && _l)
-        arguments.append(_pass + " " + std::to_string(_limit));
+        arguments.append(_pass + " " + to_string(_limit));
     return arguments;   
 }

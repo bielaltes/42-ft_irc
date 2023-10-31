@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:38:08 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/25 17:47:26 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/30 23:57:50 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ class Channel
         
         std::string _topic;
         
-        std::unordered_set<int> _members;
-        std::unordered_set<int> _invited;
-        std::unordered_set<int> _operators;
+        std::set<int> _members;
+        std::set<int> _invited;
+        std::set<int> _operators;
 
     public:
         Channel(Server *s, const std::string &name, const Client &c);

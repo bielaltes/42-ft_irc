@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:06:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:56:34 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:15:37 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
 
-Client	*Server::kickSingle(int const client_fd, std::string target, Channel *channel)
+Client	*Server::kickSingle(int const client_fd, std::string &target, Channel *channel)
 {
 	Client		*client = _clients[client_fd]; 
 	
@@ -38,7 +38,7 @@ Client	*Server::kickSingle(int const client_fd, std::string target, Channel *cha
 	return cTarget;
 }
 
-void	Server::kick(int const client_fd, cmd info)
+void	Server::kick(int const client_fd, cmd &info)
 {
 	Client		*client = _clients[client_fd]; 
 

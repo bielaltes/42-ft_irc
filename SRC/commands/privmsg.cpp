@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/27 19:38:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:13:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_name)
+void	Server::privmsgChannel(int const client_fd, cmd &info, std::string &target_name)
 {
 	Client		*client = _clients[client_fd]; 
 
@@ -40,7 +40,7 @@ void	Server::privmsgChannel(int const client_fd, cmd info, std::string target_na
 	}
 }
 
-void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name)
+void	Server::privmsgUsers(int const client_fd, cmd &info, std::string &target_name)
 {
 	Client		*client = _clients[client_fd]; 
 	std::string	nickname = client->getNick();
@@ -73,7 +73,7 @@ void	Server::privmsgUsers(int const client_fd, cmd info, std::string target_name
 	}
 }
 
-void	Server::privmsg(int const client_fd, cmd info)
+void	Server::privmsg(int const client_fd, cmd &info)
 {
 	if (info.args.size() > 1)
 	{

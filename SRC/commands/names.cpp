@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:06:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/28 11:30:33 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:10:48 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
 
-void	Server::names(int const client_fd, cmd info)
+void	Server::names(int const client_fd, cmd &info)
 {
 	Client	*client = _clients[client_fd];
 
@@ -32,7 +32,7 @@ void Channel::sendNames(const Client &c) const
 {
     Client  *aux;
     c.sendMessage(RPL_NAMREPLY(c.getNick(), _name, "", "SegfaultBot"));
-    for (std::unordered_set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+    for (std::set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
         aux = _s->getClient(*it);
         std::string prefix = "";
         if (isOperator(aux->getFd()))

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/29 12:45:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 03:06:47 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Server::Server(int port,const std::string &psswd)
     _pollsfd = std::vector<pollfd>(1); 
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1) {
-        std::cerr << "socket() error: " << strerror(errno) << std::endl;
+        std::cerr << "socket() error: " << std::strerror(errno) << std::endl;
     }
 
     sockaddr_in serverAddr;
@@ -34,11 +34,11 @@ Server::Server(int port,const std::string &psswd)
     serverAddr.sin_addr.s_addr = INADDR_ANY;
 
     if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr)) == -1) {
-        std::cerr << "bind() error: " << strerror(errno) << std::endl;
+        std::cerr << "bind() error: " << std::strerror(errno) << std::endl;
     }
 
     if (listen(serverSocket, 5) == -1) {
-        std::cerr << "listen() error: " << strerror(errno) << std::endl;
+        std::cerr << "listen() error: " << std::strerror(errno) << std::endl;
     }
     _serverfd.fd = serverSocket;
     _pollsfd[0].fd = serverSocket;
@@ -65,7 +65,7 @@ void Server::LoopServer()
         int poll_count = poll(this->_pollsfd.data(), this->_active, -1);
 		if (poll_count == -1)
 		{
-            std::cerr << "poll() error: " << strerror(errno) << std::endl;
+            std::cerr << "poll() error: " << std::strerror(errno) << std::endl;
 		}
 		for (int i = 0; i < this->_active; i++)
 		{
@@ -91,7 +91,7 @@ void Server::_newClient()
 	addrlen = sizeof remotaddr;
 	newfd = accept(this->_serverfd.fd, (struct sockaddr*)&remotaddr, &addrlen);
 	if (newfd == -1)
-		std::cerr << "accept() error: " << strerror(errno) << std::endl;
+		std::cerr << "accept() error: " << std::strerror(errno) << std::endl;
 	else
 	{
         struct pollfd p;
@@ -108,7 +108,7 @@ void Server::_request(int i)
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
-        std::cerr << "recv() error: " << strerror(errno) << std::endl;
+        std::cerr << "recv() error: " << std::strerror(errno) << std::endl;
         return;
     }
 
@@ -185,7 +185,7 @@ int Server::_searchChannel(const std::string &name)
     return -1;
 }
 
-int Server::_searchUser(const std::string &name) //added by jareste
+int Server::_searchUser(const std::string &name)
 {
     for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
     {

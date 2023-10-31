@@ -6,13 +6,13 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 22:34:06 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/29 12:36:25 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/10/31 00:13:40 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Includes.hpp"
 
-void	Server::user(int const client_fd, cmd info)
+void	Server::user(int const client_fd, cmd &info)
 {
 	Client		*client = _clients[client_fd]; 
 	
