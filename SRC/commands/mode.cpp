@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 11:49:43 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:34:08 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static std::string getKey(std::map<std::string, std::string> &modes, cmd &info, 
 			{
 				client->sendMessage(ERR_NEEDMOREPARAMS(\
 				client->getNick(), info.args[0] + " +" + c));
-				eraseChar(modes["+"], '-');
+				eraseChar(modes["+"], c);
 			}
 			break ;
 		}
@@ -130,12 +130,137 @@ static bool checkParamNo(cmd &info, Client *client, std::string &modes, char c)
 {
 	if (info.args.size() < 4)
 	{
-		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0] + " " + c));
 		eraseChar(modes, c);
 		return false;
 	}
 	return true;
 }
+
+void	Server::modeAdd(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
+{
+	Client		*client = _clients[client_fd]; 
+	Channel		*channel = _channels[_searchChannel(info.args[1])];
+	std::string pass = "";
+
+	std::cout << "add:  |" << modes["+"] << std::endl; 
+	if (findLetter(modes["+"], 'i'))
+		channel->setI(true);	
+	if (findLetter(modes["+"], 't'))
+		channel->setT(true);	
+	if (findLetter(modes["+"], 'k') && checkParamNo(info, client, modes["+"], 'k'))
+	{
+		pass = getKey(modes, info, 'k', client);
+		std::cout << "mode k:: |" + modes["+"] << std::endl;
+		if (findLetter(modes["+"], 'k'))
+		{
+			channel->setK(true);
+			channel->setPass(pass);
+		}
+	}
+	if (findLetter(modes["+"], 'o') && checkParamNo(info, client, modes["+"], 'o'))
+	{
+		pass = getKey(modes, info, 'o', client);
+		if (findLetter(modes["+"], 'o'))
+		{
+			int	target_fd = _searchUser(pass);
+			if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
+			{
+				Client *target = _clients[target_fd];
+				channel->addOperator(*target);
+			}
+			else if (!channel->isOperator(client_fd))
+			{
+				client->sendMessage(ERR_CHANOPRIVSNEEDED(\
+				client->getNick(), channel->getName()));
+				eraseChar(modes["+"], 'o');
+			}
+			else if (!channel->isMember(pass))
+			{
+				client->sendMessage(ERR_USERNOTINCHANNEL(\
+				client->getNick(), pass, channel->getName()));
+				eraseChar(modes["+"], 'o');
+			}
+		}
+	}
+	if (findLetter(modes["+"], 'l') && checkParamNo(info, client, modes["+"], 'l'))
+	{
+		for (unsigned long i = 0; i < info.args[3].length(); i++)
+			if (!std::isdigit(info.args[3][i]))
+				return ;
+		pass = getKey(modes, info, 'l', client);
+		if (findLetter(modes["+"], 'l'))
+		{
+			if (std::atoi(pass.c_str()) == 0)
+				channel->setLimit(1);
+			else
+				channel->setLimit(std::atoi(pass.c_str()));
+			channel->setL(true);
+		}
+	}
+	std::cout << "add:  |" << modes["+"] << std::endl; 
+}
+
+void	Server::modeRemove(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
+{
+	Client		*client = _clients[client_fd]; 
+	Channel		*channel = _channels[_searchChannel(info.args[1])];
+	std::string pass = "";
+
+	std::cout << "rm:  |" << modes["-"] << std::endl; 
+	if (findLetter(modes["-"], 'i'))
+		channel->setI(false);	
+	if (findLetter(modes["-"], 't'))
+		channel->setT(false);	
+	if (findLetter(modes["-"], 'k') && checkParamNo(info, client, modes["-"], 'k'))
+	{
+		pass = getKey(modes, info, 'k', client);
+		if (findLetter(modes["-"], 'k'))
+		{	
+			if (pass != channel->getPass())
+			{
+				client->sendMessage(ERR_INVALIDMODEPARAM(client->getNick()\
+				, " MODE ", channel->getName(), "-k", info.args[3]));
+				return ;
+			}
+			channel->setK(false);
+			std::string empty = "";
+			channel->setPass(empty);	
+		}
+	}
+	if (findLetter(modes["-"], 'o') && checkParamNo(info, client, modes["-"], 'o'))
+	{
+		pass = getKey(modes, info, 'o', client);
+		if (findLetter(modes["-"], 'o'))
+		{
+			int	target_fd = _searchUser(pass);
+			if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
+			{
+				Client *target = _clients[target_fd];
+				channel->rmOperator(*target);
+			}
+			else if (!channel->isOperator(client_fd))
+			{
+				client->sendMessage(ERR_CHANOPRIVSNEEDED(\
+				client->getNick(), channel->getName()));
+				eraseChar(modes["-"], 'o');
+			}
+			else if (!channel->isMember(pass))
+			{
+				client->sendMessage(ERR_USERNOTINCHANNEL(\
+				client->getNick(), pass, channel->getName()));
+				eraseChar(modes["-"], 'o');
+			}
+		}
+	}
+	if (findLetter(modes["-"], 'l'))
+	{
+		channel->setL(false);
+		channel->setLimit(0);
+	}
+	std::cout << "rm:  |" << modes["-"] << std::endl; 
+}
+
 
 void	Server::_mode(int const client_fd, cmd &info)
 {
@@ -169,114 +294,9 @@ void	Server::_mode(int const client_fd, cmd &info)
 	}
 	std::map<std::string, std::string> modes = parseMode(info.args[2]);
 	if (modes["+"].size() > 1)
-	{
-		if (findLetter(modes["+"], 'i'))
-			channel->setI(true);	
-		if (findLetter(modes["+"], 't'))
-			channel->setT(true);	
-		if (findLetter(modes["+"], 'k') && checkParamNo(info, client, modes["+"], 'k'))
-		{
-			pass = getKey(modes, info, 'k', client);
-			if (findLetter(modes["+"], 'k'))
-			{
-				channel->setK(true);
-				channel->setPass(pass);
-			}
-		}
-		if (findLetter(modes["+"], 'o') && checkParamNo(info, client, modes["+"], 'o'))
-		{
-			pass = getKey(modes, info, 'o', client);
-			if (findLetter(modes["+"], 'o'))
-			{
-				int	target_fd = _searchUser(pass);
-				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
-				{
-					Client *target = _clients[target_fd];
-					channel->addOperator(*target);
-				}
-				else if (!channel->isOperator(client_fd))
-				{
-					client->sendMessage(ERR_CHANOPRIVSNEEDED(\
-					client->getNick(), channel->getName()));
-					eraseChar(modes["+"], 'o');
-				}
-				else if (!channel->isMember(pass))
-				{
-					client->sendMessage(ERR_USERNOTINCHANNEL(\
-					client->getNick(), pass, channel->getName()));
-					eraseChar(modes["+"], 'o');
-				}
-			}
-		}
-		if (findLetter(modes["+"], 'l') && checkParamNo(info, client, modes["+"], 'l'))
-		{
-			for (unsigned long i = 0; i < info.args[3].length(); i++)
-				if (!std::isdigit(info.args[3][i]))
-					return ;
-			pass = getKey(modes, info, 'l', client);
-			if (findLetter(modes["+"], 'l'))
-			{
-				if (std::atoi(pass.c_str()) == 0)
-					channel->setLimit(1);
-				else
-					channel->setLimit(std::atoi(pass.c_str()));
-				channel->setL(true);
-			}
-		}
-	}
+		modeAdd(modes, info, client_fd);
 	if (modes["-"].size() > 1)
-	{
-		if (findLetter(modes["-"], 'i'))
-			channel->setI(false);	
-		if (findLetter(modes["-"], 't'))
-			channel->setT(false);	
-		if (findLetter(modes["-"], 'k') && checkParamNo(info, client, modes["-"], 'k'))
-		{
-			pass = getKey(modes, info, 'k', client);
-			if (findLetter(modes["-"], 'k'))
-			{	
-				if (pass != channel->getPass())
-				{
-					client->sendMessage(ERR_INVALIDMODEPARAM(client->getNick()\
-					, " MODE ", channel->getName(), "-k", info.args[3]));
-					return ;
-				}
-				channel->setK(false);
-				std::string empty = "";
-				channel->setPass(empty);	
-			}
-		}
-		if (findLetter(modes["-"], 'o') && checkParamNo(info, client, modes["-"], 'o'))
-		{
-			pass = getKey(modes, info, 'o', client);
-			if (findLetter(modes["-"], 'o'))
-			{
-				int	target_fd = _searchUser(pass);
-				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
-				{
-					Client *target = _clients[target_fd];
-					channel->rmOperator(*target);
-				}
-				else if (!channel->isOperator(client_fd))
-				{
-					client->sendMessage(ERR_CHANOPRIVSNEEDED(\
-					client->getNick(), channel->getName()));
-					eraseChar(modes["-"], 'o');
-				}
-				else if (!channel->isMember(pass))
-				{
-					client->sendMessage(ERR_USERNOTINCHANNEL(\
-					client->getNick(), pass, channel->getName()));
-					eraseChar(modes["-"], 'o');
-				}
-			}
-		}
-		if (findLetter(modes["-"], 'l'))
-		{
-			channel->setL(false);
-			channel->setLimit(0);
-		}
-	}
+		modeRemove(modes, info, client_fd);
 	if ((modes["+"].size() + modes["-"].size()) == 2)
 		return ;
 	std::string modeActivated = ":" + client->getNick() + "!" + \
