@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 11:24:14 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 11:49:43 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static std::string getKey(std::map<std::string, std::string> &modes, cmd &info, 
 			{
 				client->sendMessage(ERR_NEEDMOREPARAMS(\
 				client->getNick(), info.args[0] + " +" + c));
-				eraseChar(modes["+"], 'o');
+				eraseChar(modes["+"], c);
 			}
 			break ;
 		}
@@ -124,6 +124,17 @@ static int	orderPosition(std::string &s, char c)
 		i++;
 	}
 	return i;
+}
+
+static bool checkParamNo(cmd &info, Client *client, std::string &modes, char c)
+{
+	if (info.args.size() < 4)
+	{
+		client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
+		eraseChar(modes, c);
+		return false;
+	}
+	return true;
 }
 
 void	Server::_mode(int const client_fd, cmd &info)
@@ -163,13 +174,8 @@ void	Server::_mode(int const client_fd, cmd &info)
 			channel->setI(true);	
 		if (findLetter(modes["+"], 't'))
 			channel->setT(true);	
-		if (findLetter(modes["+"], 'k'))
+		if (findLetter(modes["+"], 'k') && checkParamNo(info, client, modes["+"], 'k'))
 		{
-			if (info.args.size() < 4)
-			{
-				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
-				return ;
-			}
 			pass = getKey(modes, info, 'k', client);
 			if (findLetter(modes["+"], 'k'))
 			{
@@ -177,13 +183,8 @@ void	Server::_mode(int const client_fd, cmd &info)
 				channel->setPass(pass);
 			}
 		}
-		if (findLetter(modes["+"], 'o'))
+		if (findLetter(modes["+"], 'o') && checkParamNo(info, client, modes["+"], 'o'))
 		{
-			if (info.args.size() < 4)
-			{
-				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
-				return ;
-			}
 			pass = getKey(modes, info, 'o', client);
 			if (findLetter(modes["+"], 'o'))
 			{
@@ -207,13 +208,8 @@ void	Server::_mode(int const client_fd, cmd &info)
 				}
 			}
 		}
-		if (findLetter(modes["+"], 'l'))
+		if (findLetter(modes["+"], 'l') && checkParamNo(info, client, modes["+"], 'l'))
 		{
-			if (info.args.size() < 4)
-			{
-				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
-				return ;
-			}
 			for (unsigned long i = 0; i < info.args[3].length(); i++)
 				if (!std::isdigit(info.args[3][i]))
 					return ;
@@ -234,13 +230,8 @@ void	Server::_mode(int const client_fd, cmd &info)
 			channel->setI(false);	
 		if (findLetter(modes["-"], 't'))
 			channel->setT(false);	
-		if (findLetter(modes["-"], 'k'))
+		if (findLetter(modes["-"], 'k') && checkParamNo(info, client, modes["-"], 'k'))
 		{
-			if (info.args.size() < 4)
-			{
-				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
-				return ;
-			}
 			pass = getKey(modes, info, 'k', client);
 			if (findLetter(modes["-"], 'k'))
 			{	
@@ -255,13 +246,8 @@ void	Server::_mode(int const client_fd, cmd &info)
 				channel->setPass(empty);	
 			}
 		}
-		if (findLetter(modes["-"], 'o'))
+		if (findLetter(modes["-"], 'o') && checkParamNo(info, client, modes["-"], 'o'))
 		{
-			if (info.args.size() < 4)
-			{
-				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
-				return ;
-			}
 			pass = getKey(modes, info, 'o', client);
 			if (findLetter(modes["-"], 'o'))
 			{
