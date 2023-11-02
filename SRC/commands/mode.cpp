@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 11:16:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 11:24:14 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	Server::_mode(int const client_fd, cmd &info)
 				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 				return ;
 			}
-			pass = getKey(modes, info, 'k', client);
+			pass = getKey(modes, info, 'o', client);
 			if (findLetter(modes["+"], 'o'))
 			{
 				int	target_fd = _searchUser(pass);
@@ -217,7 +217,7 @@ void	Server::_mode(int const client_fd, cmd &info)
 			for (unsigned long i = 0; i < info.args[3].length(); i++)
 				if (!std::isdigit(info.args[3][i]))
 					return ;
-			pass = getKey(modes, info, 'k', client);
+			pass = getKey(modes, info, 'l', client);
 			if (findLetter(modes["+"], 'l'))
 			{
 				if (std::atoi(pass.c_str()) == 0)
@@ -262,7 +262,7 @@ void	Server::_mode(int const client_fd, cmd &info)
 				client->sendMessage(ERR_NEEDMOREPARAMS(client->getNick(), info.args[0]));
 				return ;
 			}
-			pass = getKey(modes, info, 'k', client);
+			pass = getKey(modes, info, 'o', client);
 			if (findLetter(modes["-"], 'o'))
 			{
 				int	target_fd = _searchUser(pass);
