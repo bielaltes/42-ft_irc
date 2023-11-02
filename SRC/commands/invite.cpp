@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:58:10 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:24:20 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:15:49 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void	Server::_invite(int client_fd, cmd &info)
 	std::string s_client_fd = to_string(client_fd);
 
 	int ch_num = _searchChannel(channel_name);
-	Channel	*channel = _channels[ch_num];
 	if (ch_num == -1)
 	{
 		client->sendMessage(ERR_NOSUCHCHANNEL(client->getNick(), channel_name));
 		return ;
 	}
+	Channel	*channel = _channels[ch_num];
 	if (!channel->isMember(client->getNick()))
 	{
 		client->sendMessage(ERR_NOTONCHANNEL(client->getNick(), channel_name));

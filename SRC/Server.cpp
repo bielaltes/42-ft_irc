@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/10/31 18:17:20 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:16:43 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,6 @@ void Server::LoopServer()
     std::signal(SIGINT, handler);
     while (!stop)
     {
-        for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
-        {
-            std::cout << it->second << std::endl;
-        }
         int poll_count = poll(this->_pollsfd.data(), this->_active, -1);
 		if (poll_count == -1)
 		{
@@ -111,29 +107,30 @@ void Server::_request(int i)
 {
     char buffer[1024];
     ssize_t bytesRead = recv(this->_pollsfd[i].fd, buffer, sizeof(buffer), 0);
-    if (bytesRead == -1) {
+    if (bytesRead == -1)
+    {
         std::cerr << "recv() error: " << std::strerror(errno) << std::endl;
         return;
     }
-    if (bytesRead == 0) {
+    if (bytesRead == 0)
+    {
         _rmClient(*_clients[this->_pollsfd[i].fd]);
         return;
     }
     std::string request(buffer, bytesRead);
     request = _clients[this->_pollsfd[i].fd]->getBuffer() + request;
-    std::cout << "request:" << request << std::endl;
     std::vector<std::string> aux = _splitByDelimiters(request, "\r\n");
     if (aux.size() == 0)
         return ;
-    for (size_t j = 0; j < aux.size()-1; ++j)
+    for (size_t j = 0; j < aux.size() - 1; ++j)
         _runCmd(_parse(aux[j].c_str(), ' '), this->_pollsfd[i].fd);
-    if (request.size() >= 2 && request.substr(request.size()-2, request.size()) == "\r\n")
+    if (request.size() >= 2 && request.substr(request.size() - 2, request.size()) == "\r\n")
     {
         _clients[this->_pollsfd[i].fd]->setBuffer("");
-        _runCmd(_parse(aux[aux.size()-1].c_str(), ' '), this->_pollsfd[i].fd);    
+        _runCmd(_parse(aux[aux.size() - 1].c_str(), ' '), this->_pollsfd[i].fd);    
     }
     else
-        _clients[this->_pollsfd[i].fd]->setBuffer(aux[aux.size() -1]);
+        _clients[this->_pollsfd[i].fd]->setBuffer(aux[aux.size() - 1]);
 }
 
 Client *Server::getClient(int fd)
@@ -205,9 +202,8 @@ cmd Server::_parse(std::string str, char c)
     cmd command;
     std::stringstream ss(str);
     std::string token;
-    while (std::getline(ss, token, c)) {
+    while (std::getline(ss, token, c))
         command.args.push_back(token);
-    }
     return command;
 }
 
