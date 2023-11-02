@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 12:41:01 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:03:55 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void	Server::_modeAdd(std::map<std::string, std::string> &modes, cmd &info, cons
 	Channel		*channel = _channels[_searchChannel(info.args[1])];
 	std::string pass = "";
 
-	std::cout << "add:  |" << modes["+"] << std::endl; 
 	if (findLetter(modes["+"], 'i'))
 		channel->setI(true);	
 	if (findLetter(modes["+"], 't'))
@@ -151,7 +150,6 @@ void	Server::_modeAdd(std::map<std::string, std::string> &modes, cmd &info, cons
 	if (findLetter(modes["+"], 'k') && checkParamNo(info, client, modes["+"], 'k'))
 	{
 		pass = getKey(modes, info, 'k', client);
-		std::cout << "mode k:: |" + modes["+"] << std::endl;
 		if (findLetter(modes["+"], 'k'))
 		{
 			channel->setK(true);
@@ -198,7 +196,6 @@ void	Server::_modeAdd(std::map<std::string, std::string> &modes, cmd &info, cons
 			channel->setL(true);
 		}
 	}
-	std::cout << "add:  |" << modes["+"] << std::endl; 
 }
 
 void	Server::_modeRemove(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
@@ -207,7 +204,6 @@ void	Server::_modeRemove(std::map<std::string, std::string> &modes, cmd &info, c
 	Channel		*channel = _channels[_searchChannel(info.args[1])];
 	std::string pass = "";
 
-	std::cout << "rm:  |" << modes["-"] << std::endl; 
 	if (findLetter(modes["-"], 'i'))
 		channel->setI(false);	
 	if (findLetter(modes["-"], 't'))
@@ -258,7 +254,6 @@ void	Server::_modeRemove(std::map<std::string, std::string> &modes, cmd &info, c
 		channel->setL(false);
 		channel->setLimit(0);
 	}
-	std::cout << "rm:  |" << modes["-"] << std::endl; 
 }
 
 
