@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 09:32:44 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:41:35 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,18 @@ void Server::_runCmd(cmd c, int const client_fd)
 	if (checkInit(_clients[client_fd], c))
 	{
 		if (c.args[0] == "PASS")
+		{
 			_pass(client_fd, c);
+			return ;
+		}
 	}
 	else
 	{
 		for (int i = 0; i < 9; i++)
 			if (c.args[.0] == cmds[i])
+			{
 				(this->*f[i])(client_fd, c);
+				return ;
+			}
 	}
 }
