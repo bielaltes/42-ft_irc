@@ -6,13 +6,24 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 14:03:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:05:59 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../INC/Server.hpp"
 
-static int	orderPosition(std::string &s, char c);
+static int	orderPosition(std::string &s, char c)
+{
+	int i = 0;
+
+	while (s[i])
+	{
+		if (s[i] == c)
+			return i;
+		i++;
+	}
+	return i;
+}
 
 static bool	findLetter(std::string const &s, char const c)
 {
@@ -111,19 +122,6 @@ static std::string getKey(std::map<std::string, std::string> &modes, cmd &info, 
 		}
 	};
 	return key;
-}
-
-static int	orderPosition(std::string &s, char c)
-{
-	int i = 0;
-
-	while (s[i])
-	{
-		if (s[i] == c)
-			return i;
-		i++;
-	}
-	return i;
 }
 
 static bool checkParamNo(cmd &info, Client *client, std::string &modes, char c)
