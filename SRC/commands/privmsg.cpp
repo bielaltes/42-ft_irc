@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:58:43 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:28:18 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:25:32 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,19 @@ void	Server::_privmsgUsers(int const client_fd, cmd &info, std::string &target_n
 		client->sendMessage(ERR_NORECIPIENT(client->getName(), "PRIVMSG"));
 		return ;
 	}
-	if (!_existsClientNick(target_name))
+	if (!_existsClientNick(target_name) && target_name != "SegfaultBot")
 	{
 		client->sendMessage(ERR_NOSUCHNICK(client->getName(), target_name));
 		return ;
 	}
-	if (info.args.size() < 3)
+	if (info.args.size() < 3 && target_name != "SegfaultBot")
 	{
 		client->sendMessage(ERR_NOTEXTTOSEND(client->getName()));
+		return ;
+	}
+	if (target_name == "SegfaultBot")
+	{
+		client->sendMessage(":SegfaultBot PRIVMSG " + client->getNick() + " just stop messaging me or you will segfault the server...");
 		return ;
 	}
 	int target_fd = _searchUser(target_name);

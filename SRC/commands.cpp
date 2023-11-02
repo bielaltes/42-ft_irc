@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 09:41:35 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:07:03 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ static bool	checkInit(Client *client, cmd &c)
 
 void Server::_runCmd(cmd c, int const client_fd)
 {
-	std::string cmds[9] = {"JOIN", "USER", "NICK", "PRIVMSG",\
-	 "INVITE", "TOPIC", "NAMES", "MODE", "KICK"};
-	void	(Server::*f[9])(int const client_fd, cmd &info) = \
+	std::string cmds[10] = {"JOIN", "USER", "NICK", "PRIVMSG",\
+	 "INVITE", "TOPIC", "NAMES", "MODE", "KICK", "PING"};
+	void	(Server::*f[10])(int const client_fd, cmd &info) = \
 	{&Server::_join, &Server::_user, &Server::_nick, &Server::_privmsg,\
 	 &Server::_invite, &Server::_topic, &Server::_names,\
-	 &Server::_mode, &Server::_kick};
+	 &Server::_mode, &Server::_kick, &Server::_ping};
 
 	removeEmpty(c);
 	if (checkInit(_clients[client_fd], c))

@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 09:32:35 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:06:38 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,11 @@ class Server
         void    _topic(int const client_fd, cmd &info);
         void    _names(int const client_fd, cmd &info);
         void    _mode(int const client_fd, cmd &info);
+        void    _modeRemove(std::map<std::string, std::string> &modes, cmd &info, const int client_fd);
+        void    _modeAdd(std::map<std::string, std::string> &modes, cmd &info, const int client_fd);
         void    _kick(int const client_fd, cmd &info);
+        void    _ping(int const client_fd, cmd &info);
+        void    _pong(int const client_fd, std::string token);
         Client  *_kickSingle(int const client_fd, std::string &target, Channel *channel);
         std::string _currentTime();
         cmd  _getPwds(cmd &info);
