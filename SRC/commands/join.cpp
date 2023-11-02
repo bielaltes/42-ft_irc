@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 19:08:39 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:28:07 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:33:12 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	Server::_joinSingle(int const client_fd, cmd &info, std::string &target, int
 		client->sendMessage(RPL_NOTOPIC(client->getNick(), channel->getName()));
 	std::string	joinmsg = client->getNick() + "!" + client->getHostName() + " JOIN " + channel->getName();
 	channel->sendMsg(NULL, joinmsg);
-	_names(client_fd, info);
+	channel->_sendNames(*client);
 	if (channel->getK())
 		return 1;
 	return 0;

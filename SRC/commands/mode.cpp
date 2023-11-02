@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 18:02:03 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:16:09 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static bool	findLetter(std::string const &s, char const c)
 
 static void eraseChar(std::string &str, char c)
 {
-    for (std::string::iterator it = str.begin(); it != str.end(); ) {
+    for (std::string::iterator it = str.begin(); it != str.end(); )
+    {
 	    if (*it == c) {
 	        it = str.erase(it);
 	    } else {
@@ -60,16 +61,13 @@ static std::map<std::string, std::string> parseMode(std::string &s)
 	modes["order"] = "";
 	if (s.length() == 0)
 		return modes;
-	std::cout << s.length() << "|" << std::endl;
 	for (long long i = s.length() - 1; i >= 0; i--)
 	{
-		std::cout << i << std::endl;
 		if (findLetter("kol", s[i]) && !findLetter(modes["order"] + "+-", s[i]))
 			modes["order"] = s[i] + modes["order"];
 	}
 	if (findLetter(modes["-"], 'l') && findLetter(modes["order"], 'l'))
 		eraseChar(modes["order"], 'l');
-	std::cout << "+: " << modes["+"] << "|-: " << modes["-"] << "|order: " << modes["order"] << std::endl;
 	return modes;
 }
 
@@ -117,7 +115,6 @@ void	Server::_mode(int const client_fd, cmd &info)
 		return ;
 	}
 	std::map<std::string, std::string> modes = parseMode(info.args[2]);
-	std::cout << "oleeeee" << std::endl;
 	if (modes["+"].size() > 1)
 	{
 		if (findLetter(modes["+"], 'i'))
@@ -214,7 +211,6 @@ void	Server::_mode(int const client_fd, cmd &info)
 			if (findLetter(modes["+"], 'o'))
 			{
 				int	target_fd = _searchUser(pass);
-				std::cout << channel->isOperator(target_fd) << std::endl;
 				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
 				{
 					Client *target = _clients[target_fd];
@@ -389,7 +385,6 @@ void	Server::_mode(int const client_fd, cmd &info)
 			if (findLetter(modes["-"], 'o'))
 			{
 				int	target_fd = _searchUser(pass);
-				std::cout << channel->isOperator(target_fd) << std::endl;
 				if (target_fd != -1 && channel->isMember(pass) && channel->isOperator(client_fd))
 				{
 					Client *target = _clients[target_fd];

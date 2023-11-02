@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 02:06:08 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:29:27 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:32:33 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void Channel::_sendNames(const Client &c) const
 {
     Client  *aux;
     c.sendMessage(RPL_NAMREPLY(c.getNick(), _name, "", "SegfaultBot"));
-    for (std::set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+    for (std::set<int>::const_iterator it = _members.begin(); it != _members.end(); ++it)
+    {
         aux = _s->getClient(*it);
         std::string prefix = "";
         if (isOperator(aux->getFd()))

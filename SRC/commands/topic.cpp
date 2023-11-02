@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:13:09 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:29:00 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:14:07 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,12 @@ void	Server::_topic(int const client_fd, cmd &info)
 	}
 	else
 	{
-		client->sendMessage(RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic()));
-		client->sendMessage(RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), _currentTime()));
+		if (channel->getTopic() != "")
+		{
+			client->sendMessage(RPL_TOPIC(client->getNick(), channel->getName(), channel->getTopic()));
+			client->sendMessage(RPL_TOPICWHOTIME(client->getNick(), channel->getName(), channel->getTopic(), _currentTime()));
+		}
+		else
+			client->sendMessage(RPL_NOTOPIC(client->getNick(), channel->getName()));
 	}
 }

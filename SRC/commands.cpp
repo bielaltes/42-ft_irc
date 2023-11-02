@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:33:55 by jareste-          #+#    #+#             */
-/*   Updated: 2023/10/31 12:26:55 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:32:44 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,67 +23,8 @@ cmd Server::_parse(const char *str, char c)
     return command;
 }
 
-static bool is_empty(const std::string& str) {
-    return str.empty();
-}
-
-void Server::_runCmd(cmd c, int const client_fd)
+std::vector<std::string> Server::_splitByDelimiters(const std::string& input, const std::string& delimiters)
 {
-	for (std::vector<std::string>::iterator it = c.args.begin(); it != c.args.end(); )
-	{
-		if (is_empty(*it))
-		    it = c.args.erase(it);
-		else
-	    ++it;
-	}
-	if (!_clients[client_fd]->Autenticated() || c.args[0] == "PASS" ||\
-	(!_clients[client_fd]->Registered() && c.args[0] != "USER" && c.args[0] != "NICK"))
-	{
-		if (c.args[0] == "PASS")
-			_pass(client_fd, c);
-	}
-	else
-	{
-		if (c.args[0] == "JOIN")
-		{
-			_join(client_fd, c);
-		}
-		if (c.args[0] == "USER")
-		{
-			_user(client_fd, c);
-		}
-		if (c.args[0] == "NICK")
-		{
-			_nick(client_fd, c);
-		}
-		if (c.args[0] == "PRIVMSG")
-		{
-			_privmsg(client_fd, c);
-		}
-		if (c.args[0] == "INVITE")
-		{
-			_invite(client_fd, c);
-		}
-		if (c.args[0] == "TOPIC")
-		{
-			_topic(client_fd, c);
-		}
-		if (c.args[0] == "NAMES" && c.args.size() > 1)
-		{
-			_names(client_fd, c);
-		}
-		if (c.args[0] == "MODE")
-		{
-			_mode(client_fd, c);
-		}
-		if (c.args[0] == "KICK")
-		{
-			_kick(client_fd, c);
-		}
-	}
-}
-
-std::vector<std::string> Server::_splitByDelimiters(const std::string& input, const std::string& delimiters) {
     std::vector<std::string> tokens;
     size_t start = 0, end = 0;
 
@@ -101,4 +42,51 @@ std::vector<std::string> Server::_splitByDelimiters(const std::string& input, co
         }
     }
     return tokens;
+}
+
+static bool isEmpty(const std::string& str)
+{
+    return str.empty();
+}
+
+static void removeEmpty(cmd &c)
+{
+	for (std::vector<std::string>::iterator it = c.args.begin(); it != c.args.end(); )
+	{
+		if (isEmpty(*it))
+		    it = c.args.erase(it);
+		else
+	    ++it;
+	}
+}
+
+static bool	checkInit(Client *client, cmd &c)
+{
+	if (!client->Autenticated() || c.args[0] == "PASS" ||\
+	(!client->Registered() && c.args[0] != "USER" && c.args[0] != "NICK"))
+		return true;
+	return false;
+}
+
+void Server::_runCmd(cmd c, int const client_fd)
+{
+	std::string cmds[9] = {"JOIN", "USER", "NICK", "PRIVMSG",\
+	 "INVITE", "TOPIC", "NAMES", "MODE", "KICK"};
+	void	(Server::*f[9])(int const client_fd, cmd &info) = \
+	{&Server::_join, &Server::_user, &Server::_nick, &Server::_privmsg,\
+	 &Server::_invite, &Server::_topic, &Server::_names,\
+	 &Server::_mode, &Server::_kick};
+
+	removeEmpty(c);
+	if (checkInit(_clients[client_fd], c))
+	{
+		if (c.args[0] == "PASS")
+			_pass(client_fd, c);
+	}
+	else
+	{
+		for (int i = 0; i < 9; i++)
+			if (c.args[.0] == cmds[i])
+				(this->*f[i])(client_fd, c);
+	}
 }

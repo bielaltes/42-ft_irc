@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 21:22:24 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/01 13:34:46 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:32:35 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ std::string to_string(const T& value)
     return oss.str();
 }
 
-    class Server
-    {
+class Server
+{
     private:
         std::vector<pollfd> _pollsfd;
         std::string _psswd;
