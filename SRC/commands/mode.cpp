@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 01:25:42 by jareste-          #+#    #+#             */
-/*   Updated: 2023/11/02 12:34:08 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:41:01 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ static bool checkParamNo(cmd &info, Client *client, std::string &modes, char c)
 	return true;
 }
 
-void	Server::modeAdd(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
+void	Server::_modeAdd(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
 {
 	Client		*client = _clients[client_fd]; 
 	Channel		*channel = _channels[_searchChannel(info.args[1])];
@@ -201,7 +201,7 @@ void	Server::modeAdd(std::map<std::string, std::string> &modes, cmd &info, const
 	std::cout << "add:  |" << modes["+"] << std::endl; 
 }
 
-void	Server::modeRemove(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
+void	Server::_modeRemove(std::map<std::string, std::string> &modes, cmd &info, const int client_fd)
 {
 	Client		*client = _clients[client_fd]; 
 	Channel		*channel = _channels[_searchChannel(info.args[1])];
@@ -294,9 +294,9 @@ void	Server::_mode(int const client_fd, cmd &info)
 	}
 	std::map<std::string, std::string> modes = parseMode(info.args[2]);
 	if (modes["+"].size() > 1)
-		modeAdd(modes, info, client_fd);
+		_modeAdd(modes, info, client_fd);
 	if (modes["-"].size() > 1)
-		modeRemove(modes, info, client_fd);
+		_modeRemove(modes, info, client_fd);
 	if ((modes["+"].size() + modes["-"].size()) == 2)
 		return ;
 	std::string modeActivated = ":" + client->getNick() + "!" + \
