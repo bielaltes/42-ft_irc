@@ -6,7 +6,7 @@
 /*   By: jareste- <jareste-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 22:53:19 by baltes-g          #+#    #+#             */
-/*   Updated: 2023/11/02 23:12:06 by jareste-         ###   ########.fr       */
+/*   Updated: 2023/11/03 01:03:00 by jareste-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void Server::_request(int i)
         return;
     }
     std::string request(buffer, bytesRead);
-    std::cout << "request :|" + request << std::endl;
     request = _clients[this->_pollsfd[i].fd]->getBuffer() + request;
     std::vector<std::string> aux = _splitByDelimiters(request, "\r\n");
     if (aux.size() == 0)
